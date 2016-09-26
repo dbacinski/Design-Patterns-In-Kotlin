@@ -22,7 +22,7 @@ Observer / Listener
 The observer pattern is used to allow an object to publish changes to its state. 
 Other objects subscribe to be immediately notified of any changes.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -33,7 +33,7 @@ Strategy
 
 The strategy pattern is used to create an interchangeable family of algorithms from which the required process is chosen at run-time.
 
-### Example
+#### Example
 
 ```kotlin
 interface StringFormatter {
@@ -62,7 +62,7 @@ class LowerCaseFormatter : StringFormatter {
 }
 ```
 
-### Usage
+#### Usage
 
 ```kotlin
     val lowerCasePrinter = Printer(LowerCaseFormatter())
@@ -72,13 +72,13 @@ class LowerCaseFormatter : StringFormatter {
     upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 
-### Output
+#### Output
 ```
 	lorem ipsum dolor sit amet
 	LOREM IPSUM DOLOR SIT AMET
 ```
 
-### Code
+#### Code
 [Strategy.kt](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
 
 
@@ -87,7 +87,7 @@ Chain Of Responsibility
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
-### Example:
+#### Example:
 ```
 kotlin
 ```
@@ -97,7 +97,7 @@ Command
 
 The command pattern is used to express a request, including the call to be made and all of its required parameters, in a command object. The command may then be executed immediately or held for later use.
 
-### Example:
+#### Example:
 
 ```
 kotlin
@@ -109,7 +109,7 @@ State
 The state pattern is used to alter the behaviour of an object as its internal state changes. 
 The pattern allows the class for an object to apparently change at run-time.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -120,7 +120,7 @@ Visitor
 
 The visitor pattern is used to separate a relatively complex set of structured data classes from the functionality that may be performed upon the data that they hold.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -140,7 +140,7 @@ Builder / Assembler
 The builder pattern is used to create complex objects with constituent parts that must be created in the same order or using a specific algorithm. 
 An external class controls the construction algorithm.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -151,7 +151,7 @@ Factory Method
 
 The factory pattern is used to replace class constructors, abstracting the process of object generation so that the type of the object instantiated can be determined at run-time.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -164,7 +164,7 @@ The singleton pattern ensures that only one object of a particular class is ever
 All further references to objects of the singleton class refer to the same underlying instance.
 There are very few applications, do not overuse this pattern!
 
-### Example:
+#### Example:
 
 ```
 kotlin
@@ -176,7 +176,7 @@ Abstract Factory
 The abstract factory pattern is used to provide a client with a set of related or dependant objects. 
 The "family" of objects created by the factory are determined at run-time.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -195,7 +195,7 @@ Adapter
 
 The adapter pattern is used to provide a link between two otherwise incompatible types by wrapping the "adaptee" with a class that supports the interface required by the client.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -207,7 +207,7 @@ Decorator
 The decorator pattern is used to extend or alter the functionality of objects at run- time by wrapping them in an object of a decorator class. 
 This provides a flexible alternative to using inheritance to modify behaviour.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -218,7 +218,7 @@ Façade
 
 The facade pattern is used to define a simplified interface to a more complex subsystem.
 
-### Example
+#### Example
 
 ```
 kotlin
@@ -230,7 +230,7 @@ Protection Proxy
 The proxy pattern is used to provide a surrogate or placeholder object, which references an underlying object. 
 Protection proxy is restricting access.
 
-### Example
+#### Example
 
 ```
 kotlin
