@@ -5,6 +5,7 @@ Base on: https://github.com/ochococo/Design-Patterns-In-Swift
 ## Table of Contents
 
 * [Behavioral](#behavioral)
+	* [Strategy](#strategy)
 * [Creational](#creational)
 * [Structural](#structural)
 
