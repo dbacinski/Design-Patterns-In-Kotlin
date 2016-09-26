@@ -4,10 +4,10 @@ Base on: https://github.com/ochococo/Design-Patterns-In-Swift
 
 ## Table of Contents
 
-* [Behavioral](#behavioral)
+* [Behavioral Patterns](#behavioral)
 	* [Strategy](#strategy)
-* [Creational](#creational)
-* [Structural](#structural)
+* [Creational Patterns](#creational)
+* [Structural Patterns](#structural)
 
 Behavioral
 ==========
