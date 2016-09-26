@@ -32,9 +32,9 @@ Strategy
 
 The strategy pattern is used to create an interchangeable family of algorithms from which the required process is chosen at run-time.
 
-### Example in Kotlin
+### Example
 
-```
+```kotlin
 interface StringFormatter {
     fun formatString(string: String): String
 }
@@ -63,7 +63,7 @@ class LowerCaseFormatter : StringFormatter {
 
 ### Usage
 
-```
+```kotlin
     val lowerCasePrinter = Printer(LowerCaseFormatter())
     lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 
