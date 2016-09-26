@@ -72,6 +72,12 @@ class LowerCaseFormatter : StringFormatter {
     upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 
+### Output
+```
+	lorem ipsum dolor sit amet
+	LOREM IPSUM DOLOR SIT AMET
+```
+
 ### Code
 [Strategy.kt](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
 
