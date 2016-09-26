@@ -28,7 +28,7 @@ Other objects subscribe to be immediately notified of any changes.
 kotlin
 ```
 
-Strategy
+[Strategy](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
 -----------
 
 The strategy pattern is used to create an interchangeable family of algorithms from which the required process is chosen at run-time.
@@ -77,10 +77,6 @@ class LowerCaseFormatter : StringFormatter {
 	lorem ipsum dolor sit amet
 	LOREM IPSUM DOLOR SIT AMET
 ```
-
-#### Code
-[Strategy.kt](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
-
 
 Chain Of Responsibility
 -----------------------
