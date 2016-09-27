@@ -1,6 +1,6 @@
 # Design Patterns In Kotlin
 
-Base on: https://github.com/ochococo/Design-Patterns-In-Swift
+Base on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-In-Swift)
 
 ## Table of Contents
 
