@@ -9,6 +9,7 @@ Base on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-I
 * [Behavioral Patterns](#behavioral)
 	* [Observer / Listener](#observer--listener)
 	* [Strategy](#strategy)
+	* [Command](#command)
 * [Creational Patterns](#creational)
 * [Structural Patterns](#structural)
 
@@ -116,7 +117,7 @@ class LowerCaseFormatter : StringFormatter {
 	LOREM IPSUM DOLOR SIT AMET
 ```
 
-Command
+[Command](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Command.kt)
 -------
 
 The command pattern is used to express a request, including the call to be made and all of its required parameters, in a command object. The command may then be executed immediately or held for later use.
