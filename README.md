@@ -19,7 +19,7 @@ Behavioral
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Behavioral_pattern)
 
-Observer / Listener
+[Observer / Listener](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Listener.kt)
 --------
 
 The observer pattern is used to allow an object to publish changes to its state. 
