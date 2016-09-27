@@ -5,6 +5,7 @@ Base on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-I
 ## Table of Contents
 
 * [Behavioral Patterns](#behavioral)
+	* [Observer / Listener](#observer--listener)
 	* [Strategy](#strategy)
 * [Creational Patterns](#creational)
 * [Structural Patterns](#structural)
@@ -24,8 +25,43 @@ Other objects subscribe to be immediately notified of any changes.
 
 #### Example
 
+```kotlin
+interface TextChangedListener {
+    fun onTextChanged(newText: String)
+}
+
+class PrintingTextChangedListner : TextChangedListener{
+    override fun onTextChanged(newText: String) {
+        println("Text is changed to: $newText")
+    }
+}
+
+class TextView {
+
+    var listener: TextChangedListener? = null
+
+    var text: String = ""
+        set(value) {
+            field = value
+            listener?.onTextChanged(value)
+        }
+}
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    val textView = TextView()
+    textView.listener = PrintingTextChangedListner()
+    textView.text = "Lorem ipsum"
+    textView.text = "dolor sit amet"
+```
+
+#### Output
+
+```
+    Text is changed to: Lorem ipsum
+    Text is changed to: dolor sit amet
 ```
 
 [Strategy](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
