@@ -1,9 +1,9 @@
-interface State {
+interface AuthorizationState {
     fun isAuthorized(): Boolean
     fun userId(): String?
 }
 
-class UnauthorizedState() : State {
+class UnauthorizedState() : AuthorizationState {
     override fun isAuthorized(): Boolean {
         return false
     }
@@ -13,7 +13,7 @@ class UnauthorizedState() : State {
     }
 }
 
-class AuthorizedState(val userName: String?) : State {
+class AuthorizedState(val userName: String?) : AuthorizationState {
     override fun isAuthorized(): Boolean {
         return true
     }
@@ -24,7 +24,7 @@ class AuthorizedState(val userName: String?) : State {
 }
 
 class Authorization {
-    private var state: State = UnauthorizedState()
+    private var state: AuthorizationState = UnauthorizedState()
 
     var isAuthorized: Boolean = false
         get() {
@@ -44,18 +44,15 @@ class Authorization {
         state = UnauthorizedState()
     }
 
+    override fun toString(): String {
+        return "User '${userLogin}' is logged in: ${isAuthorized}"
+    }
 }
 
 fun main(args: Array<String>) {
     val authorization = Authorization()
-
     authorization.loginUser("admin")
-    printUserAuthorization(authorization)
+    println(authorization.toString())
     authorization.logoutUser("admin")
-    printUserAuthorization(authorization)
-
-}
-
-private fun printUserAuthorization(authorization: Authorization) {
-    println("User '${authorization.userLogin}' is logged in: ${authorization.isAuthorized}")
+    println(authorization.toString())
 }
