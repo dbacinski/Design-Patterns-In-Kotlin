@@ -10,6 +10,7 @@ Base on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-I
 	* [Observer / Listener](#observer--listener)
 	* [Strategy](#strategy)
 	* [Command](#command)
+	* [State](#state)
 * [Creational Patterns](#creational)
 * [Structural Patterns](#structural)
 
@@ -176,8 +177,8 @@ class CommandProcessor {
 	paying for order with id: 1
 ```
 
-State
----------
+[State](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/State.kt)
+------
 
 The state pattern is used to alter the behaviour of an object as its internal state changes. 
 The pattern allows the class for an object to apparently change at run-time.
