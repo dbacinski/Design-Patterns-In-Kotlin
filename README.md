@@ -176,16 +176,6 @@ class CommandProcessor {
 	paying for order with id: 1
 ```
 
-Chain Of Responsibility
------------------------
-
-The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
-
-#### Example:
-```
-kotlin
-```
-
 State
 ---------
 
@@ -194,6 +184,81 @@ The pattern allows the class for an object to apparently change at run-time.
 
 #### Example
 
+```kotlin
+interface AuthorizationState {
+    fun isAuthorized(): Boolean
+    fun userId(): String?
+}
+
+class UnauthorizedState() : AuthorizationState {
+    override fun isAuthorized(): Boolean {
+        return false
+    }
+
+    override fun userId(): String? {
+        return null
+    }
+}
+
+class AuthorizedState(val userName: String?) : AuthorizationState {
+    override fun isAuthorized(): Boolean {
+        return true
+    }
+
+    override fun userId(): String? {
+        return userName
+    }
+}
+
+class Authorization {
+    private var state: AuthorizationState = UnauthorizedState()
+
+    var isAuthorized: Boolean = false
+        get() {
+            return state.isAuthorized()
+        }
+
+    var userLogin: String? = null
+        get() {
+            return state.userId()
+        }
+
+    fun loginUser(userLogin: String) {
+        state = AuthorizedState(userLogin)
+    }
+
+    fun logoutUser(userId: String) {
+        state = UnauthorizedState()
+    }
+
+    override fun toString(): String {
+        return "User '${userLogin}' is logged in: ${isAuthorized}"
+    }
+}
+```
+
+#### Usage
+
+```kotlin
+    val authorization = Authorization()
+    authorization.loginUser("admin")
+    println(authorization.toString())
+    authorization.logoutUser("admin")
+    println(authorization.toString())
+```
+#### Example
+
+```kotlin
+User 'admin' is logged in: true
+User 'null' is logged in: false
+```
+
+Chain Of Responsibility
+-----------------------
+
+The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
+
+#### Example:
 ```
 kotlin
 ```
