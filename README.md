@@ -114,8 +114,8 @@ class LowerCaseFormatter : StringFormatter {
 
 #### Output
 ```
-	lorem ipsum dolor sit amet
-	LOREM IPSUM DOLOR SIT AMET
+    lorem ipsum dolor sit amet
+    LOREM IPSUM DOLOR SIT AMET
 ```
 
 [Command](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Command.kt)
@@ -171,7 +171,7 @@ class CommandProcessor {
 
 #### Output:
 ```
-	adding order with id: 1
+    adding order with id: 1
 	adding order with id: 2
 	paying for order with id: 2
 	paying for order with id: 1
@@ -250,8 +250,8 @@ class Authorization {
 #### Example
 
 ```kotlin
-User 'admin' is logged in: true
-User 'null' is logged in: false
+    User 'admin' is logged in: true
+    User 'null' is logged in: false
 ```
 
 Chain Of Responsibility
