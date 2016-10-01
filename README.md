@@ -11,6 +11,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Strategy](#strategy)
 	* [Command](#command)
 	* [State](#state)
+	* [Chain of Responsibility](#chain-of-responsibility)
 * [Creational Patterns](#creational)
 * [Structural Patterns](#structural)
 
@@ -254,7 +255,7 @@ class Authorization {
     User 'null' is logged in: false
 ```
 
-Chain Of Responsibility
+[Chain Of Responsibility](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/ChainOfResponsibility.kt)
 -----------------------
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
