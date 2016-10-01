@@ -255,7 +255,7 @@ class Authorization {
     User 'null' is logged in: false
 ```
 
-[Chain Of Responsibility](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/ChainOfResponsibility.kt)
+[Chain of Responsibility](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/ChainOfResponsibility.kt)
 -----------------------
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
