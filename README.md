@@ -247,7 +247,7 @@ class Authorization {
     authorization.logoutUser("admin")
     println(authorization.toString())
 ```
-#### Example
+#### Output
 
 ```kotlin
     User 'admin' is logged in: true
@@ -260,8 +260,70 @@ Chain Of Responsibility
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
 #### Example:
+```kotlin
+interface MessageChain {
+
+    fun addLines(inputHeader: String): String
+}
+
+class AuthenticationHeader(val token: String?, var next: MessageChain? = null) : MessageChain {
+
+    override fun addLines(inputHeader: String): String {
+
+        assert(token != null) //break the chain if token is missing
+
+        val header: String = "$inputHeader Authorization: Bearer $token\n"
+
+        return next?.addLines(header) ?: header;
+    }
+}
+
+class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
+
+    override fun addLines(inputHeader: String): String {
+
+        val header: String = "$inputHeader ContentType: $contentType\n"
+
+        return next?.addLines(header) ?: header;
+    }
+}
+
+class BodyPayload(val body: String, var next: MessageChain? = null) : MessageChain {
+
+    override fun addLines(inputHeader: String): String {
+
+        val header: String = "$inputHeader $body\n"
+
+        return next?.addLines(header) ?: header;
+    }
+}
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    val authenticationHeader = AuthenticationHeader("123456")
+    val contentTypeHeader = ContentTypeHeader("json")
+    val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
+
+    val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
+    val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
+    println(messageWithAuthentication)
+    
+fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
+    authenticationHeader.next = contentTypeHeader
+    contentTypeHeader.next = messageBody
+    return authenticationHeader
+}
+```
+
+#### Output
+
+```kotlin
+    Message with Authentication:
+     Authorization: Bearer 123456
+     ContentType: json
+     {"username"="dbacinski"}
 ```
 
 Visitor
