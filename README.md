@@ -12,6 +12,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Command](#command)
 	* [State](#state)
 	* [Chain of Responsibility](#chain-of-responsibility)
+	* [Visitor](#visitor)
 * [Creational Patterns](#creational)
 * [Structural Patterns](#structural)
 
@@ -327,8 +328,8 @@ fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, co
      {"username"="dbacinski"}
 ```
 
-Visitor
-----------
+[Visitor](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Visitor.kt)
+-------
 
 The visitor pattern is used to separate a relatively complex set of structured data classes from the functionality that may be performed upon the data that they hold.
 
