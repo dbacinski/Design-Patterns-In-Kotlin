@@ -15,6 +15,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Visitor](#visitor)
 * [Creational Patterns](#creational)
 	* [Builder / Assembler](#builder--assembler)
+	* [Factory Method](#factory-method)
 * [Structural Patterns](#structural)
 
 Behavioral
@@ -483,7 +484,7 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
     showing image with size 0
 ```
 
-Factory Method
+[Factory Method](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/FactoryMethod.kt)
 -----------------
 
 The factory pattern is used to replace class constructors, abstracting the process of object generation so that the type of the object instantiated can be determined at run-time.
