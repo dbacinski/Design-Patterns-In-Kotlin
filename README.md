@@ -14,6 +14,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Chain of Responsibility](#chain-of-responsibility)
 	* [Visitor](#visitor)
 * [Creational Patterns](#creational)
+	* [Builder / Assembler](#builder--assembler)
 * [Structural Patterns](#structural)
 
 Behavioral
@@ -414,7 +415,7 @@ Creational
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Creational_pattern)
 
 
-Builder / Assembler
+[Builder / Assembler](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Builder.kt)
 ----------
 
 The builder pattern is used to create complex objects with constituent parts that must be created in the same order or using a specific algorithm. 
