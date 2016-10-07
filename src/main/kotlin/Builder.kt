@@ -38,7 +38,7 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
 
 fun main(args: Array<String>) {
 
-    DialogBuilder()
+    val dialog = DialogBuilder()
             .apply {
                 title = "Dialog Title"
                 message = "Dialog Message"
