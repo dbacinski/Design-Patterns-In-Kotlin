@@ -27,7 +27,7 @@ Behavioral
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Behavioral_pattern)
 
-[Observer / Listener](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Listener.kt)
+[Observer / Listener](/src/main/kotlin/Listener.kt)
 --------
 
 The observer pattern is used to allow an object to publish changes to its state. 
@@ -74,7 +74,7 @@ class TextView {
     Text is changed to: dolor sit amet
 ```
 
-[Strategy](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Strategy.kt)
+[Strategy](/src/main/kotlin/Strategy.kt)
 -----------
 
 The strategy pattern is used to create an interchangeable family of algorithms from which the required process is chosen at run-time.
@@ -124,7 +124,7 @@ class LowerCaseFormatter : StringFormatter {
     LOREM IPSUM DOLOR SIT AMET
 ```
 
-[Command](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Command.kt)
+[Command](/src/main/kotlin/Command.kt)
 -------
 
 The command pattern is used to express a request, including the call to be made and all of its required parameters, in a command object. The command may then be executed immediately or held for later use.
@@ -183,7 +183,7 @@ class CommandProcessor {
 	paying for order with id: 1
 ```
 
-[State](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/State.kt)
+[State](/src/main/kotlin/State.kt)
 ------
 
 The state pattern is used to alter the behaviour of an object as its internal state changes. 
@@ -260,7 +260,7 @@ class Authorization {
     User 'null' is logged in: false
 ```
 
-[Chain of Responsibility](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/ChainOfResponsibility.kt)
+[Chain of Responsibility](/src/main/kotlin/ChainOfResponsibility.kt)
 -----------------------
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
@@ -332,7 +332,7 @@ fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, co
      {"username"="dbacinski"}
 ```
 
-[Visitor](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Visitor.kt)
+[Visitor](/src/main/kotlin/Visitor.kt)
 -------
 
 The visitor pattern is used to separate a relatively complex set of structured data classes from the functionality that may be performed upon the data that they hold.
@@ -418,7 +418,7 @@ Creational
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Creational_pattern)
 
 
-[Builder / Assembler](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Builder.kt)
+[Builder / Assembler](/src/main/kotlin/Builder.kt)
 ----------
 
 The builder pattern is used to create complex objects with constituent parts that must be created in the same order or using a specific algorithm. 
@@ -486,7 +486,7 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
     showing image with size 0
 ```
 
-[Factory Method](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/FactoryMethod.kt)
+[Factory Method](/src/main/kotlin/FactoryMethod.kt)
 -----------------
 
 The factory pattern is used to replace class constructors, abstracting the process of object generation so that the type of the object instantiated can be determined at run-time.
@@ -548,7 +548,7 @@ class CurrencyFactory {
     UK currency: No Currency Code Available
 ```
 
-[Singleton](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Singleton.kt)
+[Singleton](/src/main/kotlin/Singleton.kt)
 ------------
 
 The singleton pattern ensures that only one object of a particular class is ever created.
