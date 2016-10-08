@@ -17,6 +17,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Builder / Assembler](#builder--assembler)
 	* [Factory Method](#factory-method)
 	* [Singleton](#singleton)
+	* [Abstract Factory](#abstract-factory)
 * [Structural Patterns](#structural)
 
 Behavioral
@@ -588,7 +589,7 @@ object PrinterDriverSingleton {
     Printing with object: PrinterDriver@6ff3c5b5
 ```
 
-Abstract Factory
+[Abstract Factory](/src/main/kotlin/AbstractFactory.kt)
 -------------------
 
 The abstract factory pattern is used to provide a client with a set of related or dependant objects. 
@@ -596,9 +597,51 @@ The "family" of objects created by the factory are determined at run-time.
 
 #### Example
 
-```
-kotlin
+```kotlin
+class OrangePlant : Plant
 
+class ApplePlant : Plant
+
+abstract class PlantFactory {
+    abstract fun makePlant(): Plant
+
+    companion object {
+        fun createFactory(plant: KClass<out Plant>): PlantFactory  {
+            when (plant) {
+                OrangePlant::class -> return OrangeFactory()
+                ApplePlant::class -> return AppleFactory()
+                else -> throw IllegalArgumentException()
+            }
+        }
+    }
+}
+
+class AppleFactory : PlantFactory() {
+    override fun makePlant(): Plant {
+        return ApplePlant()
+    }
+}
+
+class OrangeFactory : PlantFactory() {
+    override fun makePlant(): Plant {
+        return OrangePlant()
+    }
+}
+
+```
+
+#### Usage
+
+```kotlin
+    val plantFactory = PlantFactory.createFactory(OrangePlant::class)
+    val plant = plantFactory.makePlant()
+    println("Created plant: $plant")
+```
+
+#### Output
+
+```kotlin
+    Created plant: OrangePlant@4f023edb
 ```
 
 Structural
