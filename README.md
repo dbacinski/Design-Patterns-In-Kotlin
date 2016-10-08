@@ -555,8 +555,36 @@ There are very few applications, do not overuse this pattern!
 
 #### Example:
 
+```kotlin
+class PrinterDriver() {
+    fun print() = println("Printing with object: $this")
+}
+
+object PrinterDriverSingleton {
+    val instance: PrinterDriver
+
+    init {
+        instance = PrinterDriver()
+        println("Initializing with object: $instance")
+    }
+}
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    println("Start");
+    PrinterDriverSingleton.instance.print()
+    PrinterDriverSingleton.instance.print()
+```
+
+#### Output
+
+```
+    Start
+    Initializing with object: PrinterDriver@6ff3c5b5
+    Printing with object: PrinterDriver@6ff3c5b5
+    Printing with object: PrinterDriver@6ff3c5b5
 ```
 
 Abstract Factory
