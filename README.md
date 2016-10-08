@@ -16,6 +16,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 * [Creational Patterns](#creational)
 	* [Builder / Assembler](#builder--assembler)
 	* [Factory Method](#factory-method)
+	* [Singleton](#singleton)
 * [Structural Patterns](#structural)
 
 Behavioral
@@ -546,7 +547,7 @@ class CurrencyFactory {
     UK currency: No Currency Code Available
 ```
 
-Singleton
+[Singleton](https://github.com/dbacinski/Design-Patterns-In-Kotlin/blob/master/src/main/kotlin/Singleton.kt)
 ------------
 
 The singleton pattern ensures that only one object of a particular class is ever created.
