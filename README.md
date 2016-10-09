@@ -19,6 +19,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Singleton](#singleton)
 	* [Abstract Factory](#abstract-factory)
 * [Structural Patterns](#structural)
+	* [Adapter](#adapter)
 
 Behavioral
 ==========
@@ -651,15 +652,57 @@ Structural
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Structural_pattern)
 
-Adapter
+[Adapter](/src/main/kotlin/Adapter.kt)
 ----------
 
 The adapter pattern is used to provide a link between two otherwise incompatible types by wrapping the "adaptee" with a class that supports the interface required by the client.
 
 #### Example
 
+```kotlin
+interface Temperature {
+    var temperature: Double
+}
+
+class CelsiusTemperature(override var temperature: Double) : Temperature
+
+class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temperature {
+
+    override var temperature: Double
+        get() = convertCelsiusToFahrenheit(celsiusTemperature.temperature)
+        set(temperatureInF) {
+            celsiusTemperature.temperature = convertFahrenheitToCelsius(temperatureInF)
+        }
+
+    private fun convertFahrenheitToCelsius(f: Double): Double {
+        return (f - 32) * 5 / 9
+    }
+
+    private fun convertCelsiusToFahrenheit(c: Double): Double {
+        return (c * 9 / 5) + 32
+    }
+}
+
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    val celsiusTemperature = CelsiusTemperature(0.0)
+    val fahrenheitTemperature = FahrenheitTemperature(celsiusTemperature)
+
+    celsiusTemperature.temperature = 36.6
+    println("${celsiusTemperature.temperature} C -> ${fahrenheitTemperature.temperature} F")
+
+    fahrenheitTemperature.temperature = 100.0
+    println("${fahrenheitTemperature.temperature} F -> ${celsiusTemperature.temperature} C")
+```
+
+#### Output
+
+```
+    36.6 C -> 97.88000000000001 F
+    100.0 F -> 37.77777777777778 C
 ```
 
 Decorator
