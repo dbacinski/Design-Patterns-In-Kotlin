@@ -21,6 +21,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 * [Structural Patterns](#structural)
 	* [Adapter](#adapter)
 	* [Decorator](#decorator)
+	* [Protection Proxy](#protection-proxy)
 
 Behavioral
 ==========
@@ -791,7 +792,7 @@ The facade pattern is used to define a simplified interface to a more complex su
 kotlin
 ```
 
-Protection Proxy
+[Protection Proxy](/src/main/kotlin/ProtectionProxy.kt)
 ------------------
 
 The proxy pattern is used to provide a surrogate or placeholder object, which references an underlying object. 
@@ -799,8 +800,49 @@ Protection proxy is restricting access.
 
 #### Example
 
+```kotlin
+interface File {
+    fun read(name: String)
+}
+
+class NormalFile : File {
+    override fun read(name: String) {
+        println("Reading file: $name")
+    }
+}
+
+//Proxy:
+class SecuredFile : File {
+    val normalFile = NormalFile()
+    var password: String = ""
+
+    override fun read(name: String) {
+        if (password == "secret") {
+            println("Password is correct: $password");
+            normalFile.read(name)
+        } else {
+            println("Incorrect password. Access denied!")
+        }
+    }
+}
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    val securedFile = SecuredFile()
+    securedFile.read("readme.md")
+
+    securedFile.password = "secret"
+    securedFile.read("readme.md")
+```
+
+#### Ouput
+
+```
+    Incorrect password. Access denied!
+    Password is correct: secret
+    Reading file: readme.md
 ```
 
 Info
