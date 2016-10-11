@@ -20,6 +20,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [Abstract Factory](#abstract-factory)
 * [Structural Patterns](#structural)
 	* [Adapter](#adapter)
+	* [Decorator](#decorator)
 
 Behavioral
 ==========
@@ -705,16 +706,78 @@ class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temper
     100.0 F -> 37.77777777777778 C
 ```
 
-Decorator
+[Decorator](/src/main/kotlin/Decorator.kt)
 ------------
 
-The decorator pattern is used to extend or alter the functionality of objects at run- time by wrapping them in an object of a decorator class. 
+The decorator pattern is used to extend or alter the functionality of objects at run-time by wrapping them in an object of a decorator class. 
 This provides a flexible alternative to using inheritance to modify behaviour.
 
 #### Example
 
+```kotlin
+interface CoffeeMachine {
+    fun makeSmallCoffee()
+    fun makeLargeCoffee()
+}
+
+class NormalCoffeeMachine : CoffeeMachine {
+    override fun makeSmallCoffee() {
+        println("Normal: Making small coffee")
+    }
+
+    override fun makeLargeCoffee() {
+        println("Normal: Making large coffee")
+    }
+}
+
+//Decorator:
+class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine {
+
+    fun makeCoffeeWithMilk() {
+        println("Enhanced: Making coffee with milk")
+        coffeeMachine.makeSmallCoffee()
+        println("Enhanced: Adding milk")
+    }
+
+    fun makeDoubleLargeCoffee() {
+        println("Enhanced: Making double large coffee")
+        coffeeMachine.makeLargeCoffee()
+        coffeeMachine.makeLargeCoffee()
+    }
+
+    override fun makeSmallCoffee() {
+        println("Enhanced: Making small coffee")
+        coffeeMachine.makeSmallCoffee()
+    }
+
+    override fun makeLargeCoffee() {
+        println("Enhanced: Making large coffee")
+        coffeeMachine.makeLargeCoffee()
+    }
+}
 ```
-kotlin
+
+#### Usage
+
+```kotlin
+    val normalMachine = NormalCoffeeMachine()
+    val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+
+    enhancedMachine.makeCoffeeWithMilk()
+
+    enhancedMachine.makeDoubleLargeCoffee()
+```
+
+#### Output
+
+```
+    Enhanced: Making coffee with milk
+    Normal: Making small coffee
+    Enhanced: Adding milk
+
+    Enhanced: Making double large coffee
+    Normal: Making large coffee
+    Normal: Making large coffee
 ```
 
 Façade
