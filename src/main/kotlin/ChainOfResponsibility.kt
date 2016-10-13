@@ -1,38 +1,25 @@
 interface MessageChain {
-
     fun addLines(inputHeader: String): String
 }
 
 class AuthenticationHeader(val token: String?, var next: MessageChain? = null) : MessageChain {
 
     override fun addLines(inputHeader: String): String {
-
-        assert(token != null) //break the chain if token is missing
-
-        val header: String = "$inputHeader Authorization: Bearer $token\n"
-
-        return next?.addLines(header) ?: header
+        token ?: throw IllegalStateException("Token should be not null")
+        return "$inputHeader Authorization: Bearer $token\n".let { next?.addLines(it) ?: it }
     }
 }
 
 class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
 
-    override fun addLines(inputHeader: String): String {
-
-        val header: String = "$inputHeader ContentType: $contentType\n"
-
-        return next?.addLines(header) ?: header
-    }
+    override fun addLines(inputHeader: String): String
+            = "$inputHeader ContentType: $contentType\n".let { next?.addLines(it) ?: it }
 }
 
 class BodyPayload(val body: String, var next: MessageChain? = null) : MessageChain {
 
-    override fun addLines(inputHeader: String): String {
-
-        val header: String = "$inputHeader $body\n"
-
-        return next?.addLines(header) ?: header
-    }
+    override fun addLines(inputHeader: String): String
+            = "$inputHeader $body\n".let { next?.addLines(it) ?: it }
 }
 
 fun main(args: Array<String>) {

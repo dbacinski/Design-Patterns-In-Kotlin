@@ -44,21 +44,18 @@ interface TextChangedListener {
     fun onTextChanged(newText: String)
 }
 
-class PrintingTextChangedListner : TextChangedListener{
-    override fun onTextChanged(newText: String) {
-        println("Text is changed to: $newText")
-    }
+class PrintingTextChangedListner : TextChangedListener {
+    override fun onTextChanged(newText: String) = println("Text is changed to: $newText")
 }
 
 class TextView {
 
     var listener: TextChangedListener? = null
 
-    var text: String = ""
-        set(value) {
-            field = value
-            listener?.onTextChanged(value)
-        }
+    var text: String by Delegates.observable("") { prop, old, new ->
+        listener?.onTextChanged(new)
+    }
+
 }
 ```
 
@@ -91,24 +88,15 @@ interface StringFormatter {
 }
 
 class Printer(val strategy: StringFormatter) {
-
-    fun printString(string: String) {
-        println(strategy.formatString(string));
-    }
+    fun printString(string: String) = println(strategy.formatString(string))
 }
 
 class UpperCaseFormatter : StringFormatter {
-
-    override fun formatString(string: String): String {
-        return string.toUpperCase()
-    }
+    override fun formatString(string: String): String = string.toUpperCase()
 }
 
 class LowerCaseFormatter : StringFormatter {
-
-    override fun formatString(string: String): String {
-        return string.toLowerCase()
-    }
+    override fun formatString(string: String): String = string.toLowerCase()
 }
 ```
 
@@ -141,31 +129,25 @@ interface OrderCommand {
 }
 
 class OrderAddCommand(val id: Long) : OrderCommand {
-    override fun execute() {
-        println("adding order with id: $id")
-    }
+    override fun execute() = println("adding order with id: $id")
 }
 
 class OrderPayCommand(val id: Long) : OrderCommand {
-    override fun execute() {
-        println("paying for order with id: $id")
-    }
+    override fun execute() = println("paying for order with id: $id")
 }
 
 class CommandProcessor {
 
     private val queue = ArrayList<OrderCommand>()
 
-    fun addToQueue(orderCommand: OrderCommand): CommandProcessor {
-        queue.add(orderCommand)
-        return this;
-    }
+    fun addToQueue(orderCommand: OrderCommand): CommandProcessor
+            = apply { queue.add(orderCommand) }
 
-    fun processCommands(): CommandProcessor {
+    fun processCommands(): CommandProcessor = apply {
         queue.forEach { it.execute() }
         queue.clear()
-        return this;
     }
+
 }
 ```
 
@@ -202,37 +184,25 @@ interface AuthorizationState {
 }
 
 class UnauthorizedState() : AuthorizationState {
-    override fun isAuthorized(): Boolean {
-        return false
-    }
+    override fun isAuthorized(): Boolean = false
 
-    override fun userId(): String? {
-        return null
-    }
+    override fun userId(): String? = null
 }
 
 class AuthorizedState(val userName: String?) : AuthorizationState {
-    override fun isAuthorized(): Boolean {
-        return true
-    }
+    override fun isAuthorized(): Boolean = true
 
-    override fun userId(): String? {
-        return userName
-    }
+    override fun userId(): String? = userName
 }
 
 class Authorization {
     private var state: AuthorizationState = UnauthorizedState()
 
     var isAuthorized: Boolean = false
-        get() {
-            return state.isAuthorized()
-        }
+        get() = state.isAuthorized()
 
     var userLogin: String? = null
-        get() {
-            return state.userId()
-        }
+        get() = state.userId()
 
     fun loginUser(userLogin: String) {
         state = AuthorizedState(userLogin)
@@ -243,7 +213,7 @@ class Authorization {
     }
 
     override fun toString(): String {
-        return "User '${userLogin}' is logged in: ${isAuthorized}"
+        return "User '$userLogin' is logged in: $isAuthorized"
     }
 }
 ```
@@ -272,40 +242,27 @@ The chain of responsibility pattern is used to process varied requests, each of 
 #### Example:
 ```kotlin
 interface MessageChain {
-
     fun addLines(inputHeader: String): String
 }
 
 class AuthenticationHeader(val token: String?, var next: MessageChain? = null) : MessageChain {
 
     override fun addLines(inputHeader: String): String {
-
-        assert(token != null) //break the chain if token is missing
-
-        val header: String = "$inputHeader Authorization: Bearer $token\n"
-
-        return next?.addLines(header) ?: header;
+        token ?: throw IllegalStateException("Token should be not null")
+        return "$inputHeader Authorization: Bearer $token\n".let { next?.addLines(it) ?: it }
     }
 }
 
 class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
 
-    override fun addLines(inputHeader: String): String {
-
-        val header: String = "$inputHeader ContentType: $contentType\n"
-
-        return next?.addLines(header) ?: header;
-    }
+    override fun addLines(inputHeader: String): String 
+            = "$inputHeader ContentType: $contentType\n".let { next?.addLines(it) ?: it }
 }
 
 class BodyPayload(val body: String, var next: MessageChain? = null) : MessageChain {
 
-    override fun addLines(inputHeader: String): String {
-
-        val header: String = "$inputHeader $body\n"
-
-        return next?.addLines(header) ?: header;
-    }
+    override fun addLines(inputHeader: String): String
+            = "$inputHeader $body\n".let { next?.addLines(it) ?: it }
 }
 ```
 
@@ -349,33 +306,21 @@ interface ReportVisitable {
 }
 
 class FixedPriceContract(val costPerYear: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 class TimeAndMaterialsContract(val costPerHour: Long, val hours: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 class SupportContract(val costPerMonth: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 interface ReportVisitor {
-
     fun visit(contract: FixedPriceContract)
-
-    fun visit(contract: TimeAndMaterialsContract);
-
-    fun visit(contract: SupportContract);
+    fun visit(contract: TimeAndMaterialsContract)
+    fun visit(contract: SupportContract)
 }
 
 class MonthlyCostReportVisitor(var monthlyCost: Long = 0) : ReportVisitor {
@@ -433,13 +378,13 @@ An external class controls the construction algorithm.
 ```kotlin
 class Dialog() {
 
-    fun showTitle() = println("showing title");
+    fun showTitle() = println("showing title")
 
-    fun setTitle(title: String) = println("setting title ${title}")
+    fun setTitle(title: String) = println("setting title $title")
 
-    fun showMessage() = println("showing message");
+    fun showMessage() = println("showing message")
 
-    fun setMessage(message: String) = println("setting message ${message}")
+    fun setMessage(message: String) = println("setting message $message")
 
     fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
 }
@@ -449,18 +394,18 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
     fun build(): Dialog {
         val dialog = Dialog()
 
-        if (title != null) {
-            dialog.setTitle(title!!)
+        title?.let {
+            dialog.setTitle(it)
             dialog.showTitle()
         }
 
-        if (message != null) {
-            dialog.setMessage(message!!)
+        message?.let {
+            dialog.setMessage(it)
             dialog.showMessage()
         }
 
-        if (image != null) {
-            dialog.showImage(image!!.readBytes())
+        image?.apply {
+            dialog.showImage(readBytes())
         }
 
         return dialog
@@ -499,20 +444,11 @@ The factory pattern is used to replace class constructors, abstracting the proce
 
 ```kotlin
 interface Currency {
-    fun code(): String
+    val code: String
 }
 
-class Euro : Currency {
-    override fun code(): String {
-        return "EUR"
-    }
-}
-
-class UnitedStatesDolar : Currency {
-    override fun code(): String {
-        return "USD"
-    }
-}
+class Euro(override val code: String = "EUR") : Currency
+class UnitedStatesDollar(override val code: String = "USD") : Currency
 
 enum class Country {
     UnitedStates, Spain, UK, Greece
@@ -522,8 +458,8 @@ class CurrencyFactory {
     fun currencyForCountry(country: Country): Currency? {
         when (country) {
             Country.Spain, Country.Greece -> return Euro()
-            Country.UnitedStates -> return UnitedStatesDolar()
-            else -> return null
+            Country.UnitedStates          -> return UnitedStatesDollar()
+            else                          -> return null
         }
     }
 }
@@ -564,14 +500,11 @@ There are very few applications, do not overuse this pattern!
 ```kotlin
 class PrinterDriver() {
     fun print() = println("Printing with object: $this")
-}
 
-object PrinterDriverSingleton {
-    val instance: PrinterDriver
-
-    init {
-        instance = PrinterDriver()
-        println("Initializing with object: $instance")
+    companion object {
+        val instance: PrinterDriver by lazy {
+            PrinterDriver().apply { println("Initializing with object: $this") }
+        }
     }
 }
 ```
@@ -579,9 +512,9 @@ object PrinterDriverSingleton {
 #### Usage
 
 ```kotlin
-    println("Start");
-    PrinterDriverSingleton.instance.print()
-    PrinterDriverSingleton.instance.print()
+    println("Start")
+    PrinterDriver.instance.print()
+    PrinterDriver.instance.print()
 ```
 
 #### Output
@@ -602,6 +535,8 @@ The "family" of objects created by the factory are determined at run-time.
 #### Example
 
 ```kotlin
+interface Plant
+
 class OrangePlant : Plant
 
 class ApplePlant : Plant
@@ -610,28 +545,21 @@ abstract class PlantFactory {
     abstract fun makePlant(): Plant
 
     companion object {
-        fun createFactory(plant: KClass<out Plant>): PlantFactory  {
-            when (plant) {
-                OrangePlant::class -> return OrangeFactory()
-                ApplePlant::class -> return AppleFactory()
-                else -> throw IllegalArgumentException()
-            }
+        inline fun <reified T : Plant> createFactory(): PlantFactory = when (T::class) {
+            OrangePlant::class -> OrangeFactory()
+            ApplePlant::class  -> AppleFactory()
+            else               -> throw IllegalArgumentException()
         }
     }
 }
 
 class AppleFactory : PlantFactory() {
-    override fun makePlant(): Plant {
-        return ApplePlant()
-    }
+    override fun makePlant(): Plant = ApplePlant()
 }
 
 class OrangeFactory : PlantFactory() {
-    override fun makePlant(): Plant {
-        return OrangePlant()
-    }
+    override fun makePlant(): Plant = OrangePlant()
 }
-
 ```
 
 #### Usage
@@ -677,13 +605,9 @@ class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temper
             celsiusTemperature.temperature = convertFahrenheitToCelsius(temperatureInF)
         }
 
-    private fun convertFahrenheitToCelsius(f: Double): Double {
-        return (f - 32) * 5 / 9
-    }
+    private fun convertFahrenheitToCelsius(f: Double): Double = (f - 32) * 5 / 9
 
-    private fun convertCelsiusToFahrenheit(c: Double): Double {
-        return (c * 9 / 5) + 32
-    }
+    private fun convertCelsiusToFahrenheit(c: Double): Double = (c * 9 / 5) + 32
 }
 
 ```
@@ -723,13 +647,9 @@ interface CoffeeMachine {
 }
 
 class NormalCoffeeMachine : CoffeeMachine {
-    override fun makeSmallCoffee() {
-        println("Normal: Making small coffee")
-    }
+    override fun makeSmallCoffee() = println("Normal: Making small coffee")
 
-    override fun makeLargeCoffee() {
-        println("Normal: Making large coffee")
-    }
+    override fun makeLargeCoffee() = println("Normal: Making large coffee")
 }
 
 //Decorator:
@@ -802,13 +722,9 @@ class ComplexSystemStore(val filePath: String) {
         store.put(key, payload)
     }
 
-    fun read(key: String): String {
-        return store[key] ?: ""
-    }
+    fun read(key: String): String = store[key] ?: ""
 
-    fun commit() {
-        println("Storing cached data: $store to file: $filePath");
-    }
+    fun commit() = println("Storing cached data: $store to file: $filePath")
 }
 
 data class User(val login: String)
@@ -822,9 +738,7 @@ class UserRepository {
         systemPreferences.commit()
     }
 
-    fun findFirst():User {
-        return User(systemPreferences.read("USER_KEY"))
-    }
+    fun findFirst(): User = User(systemPreferences.read("USER_KEY"))
 }
 ```
 
@@ -860,9 +774,7 @@ interface File {
 }
 
 class NormalFile : File {
-    override fun read(name: String) {
-        println("Reading file: $name")
-    }
+    override fun read(name: String) = println("Reading file: $name")
 }
 
 //Proxy:
@@ -872,7 +784,7 @@ class SecuredFile : File {
 
     override fun read(name: String) {
         if (password == "secret") {
-            println("Password is correct: $password");
+            println("Password is correct: $password")
             normalFile.read(name)
         } else {
             println("Incorrect password. Access denied!")
