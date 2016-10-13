@@ -44,7 +44,7 @@ interface TextChangedListener {
     fun onTextChanged(newText: String)
 }
 
-class PrintingTextChangedListner : TextChangedListener {
+class PrintingTextChangedListener : TextChangedListener {
     override fun onTextChanged(newText: String) = println("Text is changed to: $newText")
 }
 
@@ -63,7 +63,7 @@ class TextView {
 
 ```kotlin
     val textView = TextView()
-    textView.listener = PrintingTextChangedListner()
+    textView.listener = PrintingTextChangedListener()
     textView.text = "Lorem ipsum"
     textView.text = "dolor sit amet"
 ```
@@ -147,7 +147,6 @@ class CommandProcessor {
         queue.forEach { it.execute() }
         queue.clear()
     }
-
 }
 ```
 

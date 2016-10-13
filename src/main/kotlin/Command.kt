@@ -23,7 +23,6 @@ class CommandProcessor {
         queue.forEach { it.execute() }
         queue.clear()
     }
-
 }
 
 fun main(args: Array<String>) {
