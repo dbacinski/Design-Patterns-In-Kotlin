@@ -498,14 +498,12 @@ There are very few applications, do not overuse this pattern!
 #### Example:
 
 ```kotlin
-class PrinterDriver() {
-    fun print() = println("Printing with object: $this")
-
-    companion object {
-        val instance: PrinterDriver by lazy {
-            PrinterDriver().apply { println("Initializing with object: $this") }
-        }
+object PrinterDriver {
+    init {
+        println("Initializing with object: $this")
     }
+
+    fun print() = println("Printing with object: $this")
 }
 ```
 
@@ -513,8 +511,8 @@ class PrinterDriver() {
 
 ```kotlin
     println("Start")
-    PrinterDriver.instance.print()
-    PrinterDriver.instance.print()
+    PrinterDriver.print()
+    PrinterDriver.print()
 ```
 
 #### Output
