@@ -12,13 +12,9 @@ class ComplexSystemStore(val filePath: String) {
         store.put(key, payload)
     }
 
-    fun read(key: String): String {
-        return store[key] ?: ""
-    }
+    fun read(key: String): String = store[key] ?: ""
 
-    fun commit() {
-        println("Storing cached data: $store to file: $filePath");
-    }
+    fun commit() = println("Storing cached data: $store to file: $filePath")
 }
 
 data class User(val login: String)
@@ -32,9 +28,7 @@ class UserRepository {
         systemPreferences.commit()
     }
 
-    fun findFirst(): User {
-        return User(systemPreferences.read("USER_KEY"))
-    }
+    fun findFirst(): User = User(systemPreferences.read("USER_KEY"))
 }
 
 fun main(args: Array<String>) {

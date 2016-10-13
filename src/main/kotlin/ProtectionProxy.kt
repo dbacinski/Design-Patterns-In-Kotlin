@@ -3,9 +3,7 @@ interface File {
 }
 
 class NormalFile : File {
-    override fun read(name: String) {
-        println("Reading file: $name")
-    }
+    override fun read(name: String) = println("Reading file: $name")
 }
 
 //Proxy:
@@ -15,7 +13,7 @@ class SecuredFile : File {
 
     override fun read(name: String) {
         if (password == "secret") {
-            println("Password is correct: $password");
+            println("Password is correct: $password")
             normalFile.read(name)
         } else {
             println("Incorrect password. Access denied!")

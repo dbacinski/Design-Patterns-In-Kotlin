@@ -3,24 +3,15 @@ interface StringFormatter {
 }
 
 class Printer(val strategy: StringFormatter) {
-
-    fun printString(string: String) {
-        println(strategy.formatString(string));
-    }
+    fun printString(string: String) = println(strategy.formatString(string))
 }
 
 class UpperCaseFormatter : StringFormatter {
-
-    override fun formatString(string: String): String {
-        return string.toUpperCase()
-    }
+    override fun formatString(string: String): String = string.toUpperCase()
 }
 
 class LowerCaseFormatter : StringFormatter {
-
-    override fun formatString(string: String): String {
-        return string.toLowerCase()
-    }
+    override fun formatString(string: String): String = string.toLowerCase()
 }
 
 fun main(args: Array<String>) {

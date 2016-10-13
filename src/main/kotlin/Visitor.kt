@@ -3,33 +3,24 @@ interface ReportVisitable {
 }
 
 class FixedPriceContract(val costPerYear: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 class TimeAndMaterialsContract(val costPerHour: Long, val hours: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 class SupportContract(val costPerMonth: Long) : ReportVisitable {
-
-    override fun accept(visitor: ReportVisitor) {
-        visitor.visit(this)
-    }
+    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
 }
 
 interface ReportVisitor {
 
     fun visit(contract: FixedPriceContract)
 
-    fun visit(contract: TimeAndMaterialsContract);
+    fun visit(contract: TimeAndMaterialsContract)
 
-    fun visit(contract: SupportContract);
+    fun visit(contract: SupportContract)
 }
 
 class MonthlyCostReportVisitor(var monthlyCost: Long = 0) : ReportVisitor {

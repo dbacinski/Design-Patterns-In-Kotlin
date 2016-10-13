@@ -5,31 +5,25 @@ interface OrderCommand {
 }
 
 class OrderAddCommand(val id: Long) : OrderCommand {
-    override fun execute() {
-        println("adding order with id: $id")
-    }
+    override fun execute() = println("adding order with id: $id")
 }
 
 class OrderPayCommand(val id: Long) : OrderCommand {
-    override fun execute() {
-        println("paying for order with id: $id")
-    }
+    override fun execute() = println("paying for order with id: $id")
 }
 
 class CommandProcessor {
 
     private val queue = ArrayList<OrderCommand>()
 
-    fun addToQueue(orderCommand: OrderCommand): CommandProcessor {
-        queue.add(orderCommand)
-        return this;
-    }
+    fun addToQueue(orderCommand: OrderCommand): CommandProcessor
+            = apply { queue.add(orderCommand) }
 
-    fun processCommands(): CommandProcessor {
+    fun processCommands(): CommandProcessor = apply {
         queue.forEach { it.execute() }
         queue.clear()
-        return this;
     }
+
 }
 
 fun main(args: Array<String>) {

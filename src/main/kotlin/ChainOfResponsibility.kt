@@ -11,7 +11,7 @@ class AuthenticationHeader(val token: String?, var next: MessageChain? = null) :
 
         val header: String = "$inputHeader Authorization: Bearer $token\n"
 
-        return next?.addLines(header) ?: header;
+        return next?.addLines(header) ?: header
     }
 }
 
@@ -21,7 +21,7 @@ class ContentTypeHeader(val contentType: String, var next: MessageChain? = null)
 
         val header: String = "$inputHeader ContentType: $contentType\n"
 
-        return next?.addLines(header) ?: header;
+        return next?.addLines(header) ?: header
     }
 }
 
@@ -31,7 +31,7 @@ class BodyPayload(val body: String, var next: MessageChain? = null) : MessageCha
 
         val header: String = "$inputHeader $body\n"
 
-        return next?.addLines(header) ?: header;
+        return next?.addLines(header) ?: header
     }
 }
 
