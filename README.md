@@ -653,7 +653,7 @@ class NormalCoffeeMachine : CoffeeMachine {
 }
 
 //Decorator:
-class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine {
+class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by coffeeMachine {
 
     fun makeCoffeeWithMilk() {
         println("Enhanced: Making coffee with milk")
@@ -664,16 +664,6 @@ class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine {
     fun makeDoubleLargeCoffee() {
         println("Enhanced: Making double large coffee")
         coffeeMachine.makeLargeCoffee()
-        coffeeMachine.makeLargeCoffee()
-    }
-
-    override fun makeSmallCoffee() {
-        println("Enhanced: Making small coffee")
-        coffeeMachine.makeSmallCoffee()
-    }
-
-    override fun makeLargeCoffee() {
-        println("Enhanced: Making large coffee")
         coffeeMachine.makeLargeCoffee()
     }
 }
