@@ -4,13 +4,9 @@ interface CoffeeMachine {
 }
 
 class NormalCoffeeMachine : CoffeeMachine {
-    override fun makeSmallCoffee() {
-        println("Normal: Making small coffee")
-    }
+    override fun makeSmallCoffee() = println("Normal: Making small coffee")
 
-    override fun makeLargeCoffee() {
-        println("Normal: Making large coffee")
-    }
+    override fun makeLargeCoffee() = println("Normal: Making large coffee")
 }
 
 //Decorator:

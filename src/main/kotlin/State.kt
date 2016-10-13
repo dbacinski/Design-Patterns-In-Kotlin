@@ -4,37 +4,25 @@ interface AuthorizationState {
 }
 
 class UnauthorizedState() : AuthorizationState {
-    override fun isAuthorized(): Boolean {
-        return false
-    }
+    override fun isAuthorized(): Boolean = false
 
-    override fun userId(): String? {
-        return null
-    }
+    override fun userId(): String? = null
 }
 
 class AuthorizedState(val userName: String?) : AuthorizationState {
-    override fun isAuthorized(): Boolean {
-        return true
-    }
+    override fun isAuthorized(): Boolean = true
 
-    override fun userId(): String? {
-        return userName
-    }
+    override fun userId(): String? = userName
 }
 
 class Authorization {
     private var state: AuthorizationState = UnauthorizedState()
 
     var isAuthorized: Boolean = false
-        get() {
-            return state.isAuthorized()
-        }
+        get() = state.isAuthorized()
 
     var userLogin: String? = null
-        get() {
-            return state.userId()
-        }
+        get() = state.userId()
 
     fun loginUser(userLogin: String) {
         state = AuthorizedState(userLogin)
@@ -45,7 +33,7 @@ class Authorization {
     }
 
     override fun toString(): String {
-        return "User '${userLogin}' is logged in: ${isAuthorized}"
+        return "User '$userLogin' is logged in: $isAuthorized"
     }
 }
 

@@ -2,13 +2,13 @@ import java.io.File
 
 class Dialog() {
 
-    fun showTitle() = println("showing title");
+    fun showTitle() = println("showing title")
 
-    fun setTitle(title: String) = println("setting title ${title}")
+    fun setTitle(title: String) = println("setting title $title")
 
-    fun showMessage() = println("showing message");
+    fun showMessage() = println("showing message")
 
-    fun setMessage(message: String) = println("setting message ${message}")
+    fun setMessage(message: String) = println("setting message $message")
 
     fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
 }
@@ -18,18 +18,18 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
     fun build(): Dialog {
         val dialog = Dialog()
 
-        if (title != null) {
-            dialog.setTitle(title!!)
+        title?.let {
+            dialog.setTitle(it)
             dialog.showTitle()
         }
 
-        if (message != null) {
-            dialog.setMessage(message!!)
+        message?.let {
+            dialog.setMessage(it)
             dialog.showMessage()
         }
 
-        if (image != null) {
-            dialog.showImage(image!!.readBytes())
+        image?.apply {
+            dialog.showImage(readBytes())
         }
 
         return dialog

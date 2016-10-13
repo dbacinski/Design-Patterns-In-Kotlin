@@ -12,13 +12,9 @@ class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temper
             celsiusTemperature.temperature = convertFahrenheitToCelsius(temperatureInF)
         }
 
-    private fun convertFahrenheitToCelsius(f: Double): Double {
-        return (f - 32) * 5 / 9
-    }
+    private fun convertFahrenheitToCelsius(f: Double): Double = (f - 32) * 5 / 9
 
-    private fun convertCelsiusToFahrenheit(c: Double): Double {
-        return (c * 9 / 5) + 32
-    }
+    private fun convertCelsiusToFahrenheit(c: Double): Double = (c * 9 / 5) + 32
 }
 
 fun main(args: Array<String>) {
