@@ -1,49 +1,96 @@
 import java.io.File
 
+// Let's assume that Dialog class is provided by external library.
+// We have only access to Dialog public interface which cannot be changed.
+
 class Dialog() {
 
     fun showTitle() = println("showing title")
 
-    fun setTitle(title: String) = println("setting title $title")
+    fun setTitle(text: String) = println("setting title text $text")
+
+    fun setTitleColor(color: String) = println("setting title color $color")
 
     fun showMessage() = println("showing message")
 
-    fun setMessage(message: String) = println("setting message $message")
+    fun setMessage(text: String) = println("setting message $text")
+
+    fun setMessageColor(color: String) = println("setting message color $color")
 
     fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
+
+    fun show() = println("showing dialog $this")
 }
 
-class DialogBuilder(var title: String? = null, var message: String? = null, var image: File? = null) {
+//Builder:
+class DialogBuilder() {
+    constructor(init: DialogBuilder.() -> Unit) : this() {
+        init()
+    }
+
+    private var titleHolder: TextView? = null
+    private var messageHolder: TextView? = null
+    private var imageHolder: File? = null
+
+    fun title(init: TextView.() -> Unit) {
+        titleHolder = TextView().apply { init() }
+    }
+
+    fun message(init: TextView.() -> Unit) {
+        messageHolder = TextView().apply { init() }
+    }
+
+    fun image(init: () -> File) {
+        imageHolder = init()
+    }
 
     fun build(): Dialog {
         val dialog = Dialog()
 
-        title?.let {
-            dialog.setTitle(it)
+        titleHolder?.let {
+            dialog.setTitle(it.text)
+            dialog.setTitleColor(it.color)
             dialog.showTitle()
         }
 
-        message?.let {
-            dialog.setMessage(it)
+        messageHolder?.let {
+            dialog.setMessage(it.text)
+            dialog.setMessageColor(it.color)
             dialog.showMessage()
         }
 
-        image?.apply {
-            dialog.showImage(readBytes())
+        imageHolder?.let {
+            dialog.showImage(it.readBytes())
         }
 
         return dialog
     }
+
+    class TextView {
+        var text: String = ""
+        var color: String = "#00000"
+    }
+}
+
+//Function that creates dialog builder and builds Dialog
+fun dialog(init: DialogBuilder.() -> Unit): Dialog {
+    return DialogBuilder(init).build()
 }
 
 fun main(args: Array<String>) {
 
-    DialogBuilder()
-            .apply {
-                title = "Dialog Title"
-                message = "Dialog Message"
-                image = File.createTempFile("image", "jpg")
-            }
-            .build()
-}
+    val dialog: Dialog = dialog {
+        title {
+            text = "Dialog Title"
+        }
+        message {
+            text = "Dialog Message"
+            color = "#333333"
+        }
+        image {
+            File.createTempFile("image", "jpg")
+        }
+    }
 
+    dialog.show()
+}
