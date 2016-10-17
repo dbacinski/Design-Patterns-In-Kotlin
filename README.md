@@ -111,9 +111,10 @@ upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 
 #### Output
+
 ```
-    lorem ipsum dolor sit amet
-    LOREM IPSUM DOLOR SIT AMET
+lorem ipsum dolor sit amet
+LOREM IPSUM DOLOR SIT AMET
 ```
 
 [Command](/src/main/kotlin/Command.kt)
@@ -150,7 +151,8 @@ class CommandProcessor {
 }
 ```
 
-#### Usage:
+#### Usage
+
 ```kotlin
 CommandProcessor()
     .addToQueue(OrderAddCommand(1L))
@@ -160,7 +162,8 @@ CommandProcessor()
     .processCommands()
 ```
 
-#### Output:
+#### Output
+
 ```
 adding order with id: 1
 adding order with id: 2
@@ -226,6 +229,7 @@ println(authorization.toString())
 authorization.logoutUser("admin")
 println(authorization.toString())
 ```
+
 #### Output
 
 ```
@@ -238,7 +242,8 @@ User 'null' is logged in: false
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
-#### Example:
+#### Example
+
 ```kotlin
 interface MessageChain {
     fun addLines(inputHeader: String): String
