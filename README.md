@@ -380,39 +380,75 @@ An external class controls the construction algorithm.
 #### Example
 
 ```kotlin
+// Let's assume that Dialog class is provided by external library.
+// We have only access to Dialog public interface which cannot be changed.
+
 class Dialog() {
 
     fun showTitle() = println("showing title")
 
-    fun setTitle(title: String) = println("setting title $title")
+    fun setTitle(text: String) = println("setting title text $text")
+
+    fun setTitleColor(color: String) = println("setting title color $color")
 
     fun showMessage() = println("showing message")
 
-    fun setMessage(message: String) = println("setting message $message")
+    fun setMessage(text: String) = println("setting message $text")
+
+    fun setMessageColor(color: String) = println("setting message color $color")
 
     fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
+
+    fun show() = println("showing dialog $this")
 }
 
-class DialogBuilder(var title: String? = null, var message: String? = null, var image: File? = null) {
+//Builder:
+class DialogBuilder() {
+    constructor(init: DialogBuilder.() -> Unit) : this() {
+        init()
+    }
+
+    private var titleHolder: TextView? = null
+    private var messageHolder: TextView? = null
+    private var imageHolder: File? = null
+
+    fun title(init: TextView.() -> Unit) {
+        titleHolder = TextView().apply { init() }
+    }
+
+    fun message(init: TextView.() -> Unit) {
+        messageHolder = TextView().apply { init() }
+    }
+
+    fun image(init: () -> File) {
+        imageHolder = init()
+    }
 
     fun build(): Dialog {
         val dialog = Dialog()
 
-        title?.let {
-            dialog.setTitle(it)
+        titleHolder?.let {
+            dialog.setTitle(it.text)
+            dialog.setTitleColor(it.color)
             dialog.showTitle()
         }
 
-        message?.let {
-            dialog.setMessage(it)
+        messageHolder?.let {
+            dialog.setMessage(it.text)
+            dialog.setMessageColor(it.color)
             dialog.showMessage()
         }
 
-        image?.apply {
-            dialog.showImage(readBytes())
+        imageHolder?.let {
+            dialog.showImage(it.readBytes())
         }
 
         return dialog
+    }
+
+    class TextView {
+        var text: String = ""
+        var color: String = "#00000"
     }
 }
 ```
@@ -420,23 +456,38 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
 #### Usage
 
 ```kotlin
-DialogBuilder()
-    .apply {
-	title = "Dialog Title"
-	message = "Dialog Message"
-	image = File.createTempFile("image", "jpg")
+//Function that creates dialog builder and builds Dialog
+fun dialog(init: DialogBuilder.() -> Unit): Dialog {
+    return DialogBuilder(init).build()
+}
+
+val dialog: Dialog = dialog {
+	title {
+    	text = "Dialog Title"
     }
-    .build()
+    message {
+        text = "Dialog Message"
+        color = "#333333"
+    }
+    image {
+        File.createTempFile("image", "jpg")
+    }
+}
+
+dialog.show()
 ```
 
 #### Output
 
 ```
-setting title Dialog Title
+setting title text Dialog Title
+setting title color #00000
 showing title
 setting message Dialog Message
+setting message color #333333
 showing message
 showing image with size 0
+showing dialog Dialog@5f184fc6
 ```
 
 [Factory Method](/src/main/kotlin/FactoryMethod.kt)
