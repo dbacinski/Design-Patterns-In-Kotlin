@@ -62,17 +62,17 @@ class TextView {
 #### Usage
 
 ```kotlin
-    val textView = TextView()
-    textView.listener = PrintingTextChangedListener()
-    textView.text = "Lorem ipsum"
-    textView.text = "dolor sit amet"
+val textView = TextView()
+textView.listener = PrintingTextChangedListener()
+textView.text = "Lorem ipsum"
+textView.text = "dolor sit amet"
 ```
 
 #### Output
 
 ```
-    Text is changed to: Lorem ipsum
-    Text is changed to: dolor sit amet
+Text is changed to: Lorem ipsum
+Text is changed to: dolor sit amet
 ```
 
 [Strategy](/src/main/kotlin/Strategy.kt)
@@ -103,17 +103,18 @@ class LowerCaseFormatter : StringFormatter {
 #### Usage
 
 ```kotlin
-    val lowerCasePrinter = Printer(LowerCaseFormatter())
-    lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+val lowerCasePrinter = Printer(LowerCaseFormatter())
+lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 
-    val upperCasePrinter = Printer(UpperCaseFormatter())
-    upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+val upperCasePrinter = Printer(UpperCaseFormatter())
+upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 
 #### Output
+
 ```
-    lorem ipsum dolor sit amet
-    LOREM IPSUM DOLOR SIT AMET
+lorem ipsum dolor sit amet
+LOREM IPSUM DOLOR SIT AMET
 ```
 
 [Command](/src/main/kotlin/Command.kt)
@@ -150,22 +151,24 @@ class CommandProcessor {
 }
 ```
 
-#### Usage:
+#### Usage
+
 ```kotlin
-    CommandProcessor()
-            .addToQueue(OrderAddCommand(1L))
-            .addToQueue(OrderAddCommand(2L))
-            .addToQueue(OrderPayCommand(2L))
-            .addToQueue(OrderPayCommand(1L))
-            .processCommands()
+CommandProcessor()
+    .addToQueue(OrderAddCommand(1L))
+    .addToQueue(OrderAddCommand(2L))
+    .addToQueue(OrderPayCommand(2L))
+    .addToQueue(OrderPayCommand(1L))
+    .processCommands()
 ```
 
-#### Output:
+#### Output
+
 ```
-    adding order with id: 1
-	adding order with id: 2
-	paying for order with id: 2
-	paying for order with id: 1
+adding order with id: 1
+adding order with id: 2
+paying for order with id: 2
+paying for order with id: 1
 ```
 
 [State](/src/main/kotlin/State.kt)
@@ -227,6 +230,7 @@ println(authorization)
 authorization.logoutUser()
 println(authorization)
 ```
+
 #### Output
 
 ```
@@ -239,7 +243,8 @@ User 'Unknown' is logged in: false
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
-#### Example:
+#### Example
+
 ```kotlin
 interface MessageChain {
     fun addLines(inputHeader: String): String
@@ -269,13 +274,13 @@ class BodyPayload(val body: String, var next: MessageChain? = null) : MessageCha
 #### Usage
 
 ```kotlin
-    val authenticationHeader = AuthenticationHeader("123456")
-    val contentTypeHeader = ContentTypeHeader("json")
-    val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
+val authenticationHeader = AuthenticationHeader("123456")
+val contentTypeHeader = ContentTypeHeader("json")
+val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
 
-    val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
-    val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
-    println(messageWithAuthentication)
+val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
+val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
+println(messageWithAuthentication)
     
 fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
     authenticationHeader.next = contentTypeHeader
@@ -287,10 +292,10 @@ fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, co
 #### Output
 
 ```
-    Message with Authentication:
-     Authorization: Bearer 123456
-     ContentType: json
-     {"username"="dbacinski"}
+Message with Authentication:
+Authorization: Bearer 123456
+ContentType: json
+{"username"="dbacinski"}
 ```
 
 [Visitor](/src/main/kotlin/Visitor.kt)
@@ -341,22 +346,22 @@ class MonthlyCostReportVisitor(var monthlyCost: Long = 0) : ReportVisitor {
 #### Usage
 
 ```kotlin
-    val projectAlpha = FixedPriceContract(costPerYear = 10000)
-    val projectBeta = SupportContract(costPerMonth = 500)
-    val projectGamma = TimeAndMaterialsContract(hours = 150, costPerHour = 10)
-    val projectKappa = TimeAndMaterialsContract(hours = 50, costPerHour = 50)
+val projectAlpha = FixedPriceContract(costPerYear = 10000)
+val projectBeta = SupportContract(costPerMonth = 500)
+val projectGamma = TimeAndMaterialsContract(hours = 150, costPerHour = 10)
+val projectKappa = TimeAndMaterialsContract(hours = 50, costPerHour = 50)
 
-    val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
+val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
 
-    val monthlyCostReportVisitor = MonthlyCostReportVisitor()
-    projects.forEach { it.accept(monthlyCostReportVisitor) }
-    println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
+val monthlyCostReportVisitor = MonthlyCostReportVisitor()
+projects.forEach { it.accept(monthlyCostReportVisitor) }
+println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
 ```
 
 #### Output
 
 ```
-    Monthly cost: 5333
+Monthly cost: 5333
 ```
 
 Creational
@@ -376,39 +381,75 @@ An external class controls the construction algorithm.
 #### Example
 
 ```kotlin
+// Let's assume that Dialog class is provided by external library.
+// We have only access to Dialog public interface which cannot be changed.
+
 class Dialog() {
 
     fun showTitle() = println("showing title")
 
-    fun setTitle(title: String) = println("setting title $title")
+    fun setTitle(text: String) = println("setting title text $text")
+
+    fun setTitleColor(color: String) = println("setting title color $color")
 
     fun showMessage() = println("showing message")
 
-    fun setMessage(message: String) = println("setting message $message")
+    fun setMessage(text: String) = println("setting message $text")
+
+    fun setMessageColor(color: String) = println("setting message color $color")
 
     fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
+
+    fun show() = println("showing dialog $this")
 }
 
-class DialogBuilder(var title: String? = null, var message: String? = null, var image: File? = null) {
+//Builder:
+class DialogBuilder() {
+    constructor(init: DialogBuilder.() -> Unit) : this() {
+        init()
+    }
+
+    private var titleHolder: TextView? = null
+    private var messageHolder: TextView? = null
+    private var imageHolder: File? = null
+
+    fun title(init: TextView.() -> Unit) {
+        titleHolder = TextView().apply { init() }
+    }
+
+    fun message(init: TextView.() -> Unit) {
+        messageHolder = TextView().apply { init() }
+    }
+
+    fun image(init: () -> File) {
+        imageHolder = init()
+    }
 
     fun build(): Dialog {
         val dialog = Dialog()
 
-        title?.let {
-            dialog.setTitle(it)
+        titleHolder?.apply {
+            dialog.setTitle(text)
+            dialog.setTitleColor(color)
             dialog.showTitle()
         }
 
-        message?.let {
-            dialog.setMessage(it)
+        messageHolder?.apply {
+            dialog.setMessage(text)
+            dialog.setMessageColor(color)
             dialog.showMessage()
         }
 
-        image?.apply {
+        imageHolder?.apply {
             dialog.showImage(readBytes())
         }
 
         return dialog
+    }
+
+    class TextView {
+        var text: String = ""
+        var color: String = "#00000"
     }
 }
 ```
@@ -416,23 +457,38 @@ class DialogBuilder(var title: String? = null, var message: String? = null, var 
 #### Usage
 
 ```kotlin
-    DialogBuilder()
-            .apply {
-                title = "Dialog Title"
-                message = "Dialog Message"
-                image = File.createTempFile("image", "jpg")
-            }
-            .build()
+//Function that creates dialog builder and builds Dialog
+fun dialog(init: DialogBuilder.() -> Unit): Dialog {
+    return DialogBuilder(init).build()
+}
+
+val dialog: Dialog = dialog {
+	title {
+    	text = "Dialog Title"
+    }
+    message {
+        text = "Dialog Message"
+        color = "#333333"
+    }
+    image {
+        File.createTempFile("image", "jpg")
+    }
+}
+
+dialog.show()
 ```
 
 #### Output
 
 ```
-    setting title Dialog Title
-    showing title
-    setting message Dialog Message
-    showing message
-    showing image with size 0
+setting title text Dialog Title
+setting title color #00000
+showing title
+setting message Dialog Message
+setting message color #333333
+showing message
+showing image with size 0
+showing dialog Dialog@5f184fc6
 ```
 
 [Factory Method](/src/main/kotlin/FactoryMethod.kt)
@@ -468,24 +524,24 @@ class CurrencyFactory {
 #### Usage
 
 ```kotlin
-    val noCurrencyCode = "No Currency Code Available"
+val noCurrencyCode = "No Currency Code Available"
 
-    val greeceCode = CurrencyFactory().currencyForCountry(Country.Greece)?.code() ?: noCurrencyCode
-    println("Greece currency: $greeceCode")
+val greeceCode = CurrencyFactory().currencyForCountry(Country.Greece)?.code() ?: noCurrencyCode
+println("Greece currency: $greeceCode")
 
-    val usCode = CurrencyFactory().currencyForCountry(Country.UnitedStates)?.code() ?: noCurrencyCode
-    println("US currency: $usCode")
+val usCode = CurrencyFactory().currencyForCountry(Country.UnitedStates)?.code() ?: noCurrencyCode
+println("US currency: $usCode")
 
-    val ukCode = CurrencyFactory().currencyForCountry(Country.UK)?.code() ?: noCurrencyCode
-    println("UK currency: $ukCode")
+val ukCode = CurrencyFactory().currencyForCountry(Country.UK)?.code() ?: noCurrencyCode
+println("UK currency: $ukCode")
 ```
 
 #### Output
 
 ```
-    Greece currency: EUR
-    US currency: USD
-    UK currency: No Currency Code Available
+Greece currency: EUR
+US currency: USD
+UK currency: No Currency Code Available
 ```
 
 [Singleton](/src/main/kotlin/Singleton.kt)
@@ -510,18 +566,18 @@ object PrinterDriver {
 #### Usage
 
 ```kotlin
-    println("Start")
-    PrinterDriver.print()
-    PrinterDriver.print()
+println("Start")
+PrinterDriver.print()
+PrinterDriver.print()
 ```
 
 #### Output
 
 ```
-    Start
-    Initializing with object: PrinterDriver@6ff3c5b5
-    Printing with object: PrinterDriver@6ff3c5b5
-    Printing with object: PrinterDriver@6ff3c5b5
+Start
+Initializing with object: PrinterDriver@6ff3c5b5
+Printing with object: PrinterDriver@6ff3c5b5
+Printing with object: PrinterDriver@6ff3c5b5
 ```
 
 [Abstract Factory](/src/main/kotlin/AbstractFactory.kt)
@@ -563,15 +619,15 @@ class OrangeFactory : PlantFactory() {
 #### Usage
 
 ```kotlin
-    val plantFactory = PlantFactory.createFactory(OrangePlant::class)
-    val plant = plantFactory.makePlant()
-    println("Created plant: $plant")
+val plantFactory = PlantFactory.createFactory(OrangePlant::class)
+val plant = plantFactory.makePlant()
+println("Created plant: $plant")
 ```
 
 #### Output
 
 ```kotlin
-    Created plant: OrangePlant@4f023edb
+Created plant: OrangePlant@4f023edb
 ```
 
 Structural
@@ -613,21 +669,21 @@ class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temper
 #### Usage
 
 ```kotlin
-    val celsiusTemperature = CelsiusTemperature(0.0)
-    val fahrenheitTemperature = FahrenheitTemperature(celsiusTemperature)
+val celsiusTemperature = CelsiusTemperature(0.0)
+val fahrenheitTemperature = FahrenheitTemperature(celsiusTemperature)
 
-    celsiusTemperature.temperature = 36.6
-    println("${celsiusTemperature.temperature} C -> ${fahrenheitTemperature.temperature} F")
+celsiusTemperature.temperature = 36.6
+println("${celsiusTemperature.temperature} C -> ${fahrenheitTemperature.temperature} F")
 
-    fahrenheitTemperature.temperature = 100.0
-    println("${fahrenheitTemperature.temperature} F -> ${celsiusTemperature.temperature} C")
+fahrenheitTemperature.temperature = 100.0
+println("${fahrenheitTemperature.temperature} F -> ${celsiusTemperature.temperature} C")
 ```
 
 #### Output
 
 ```
-    36.6 C -> 97.88000000000001 F
-    100.0 F -> 37.77777777777778 C
+36.6 C -> 97.88000000000001 F
+100.0 F -> 37.77777777777778 C
 ```
 
 [Decorator](/src/main/kotlin/Decorator.kt)
@@ -670,24 +726,24 @@ class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by
 #### Usage
 
 ```kotlin
-    val normalMachine = NormalCoffeeMachine()
-    val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+val normalMachine = NormalCoffeeMachine()
+val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
 
-    enhancedMachine.makeCoffeeWithMilk()
+enhancedMachine.makeCoffeeWithMilk()
 
-    enhancedMachine.makeDoubleLargeCoffee()
+enhancedMachine.makeDoubleLargeCoffee()
 ```
 
 #### Output
 
 ```
-    Enhanced: Making coffee with milk
-    Normal: Making small coffee
-    Enhanced: Adding milk
+Enhanced: Making coffee with milk
+Normal: Making small coffee
+Enhanced: Adding milk
 
-    Enhanced: Making double large coffee
-    Normal: Making large coffee
-    Normal: Making large coffee
+Enhanced: Making double large coffee
+Normal: Making large coffee
+Normal: Making large coffee
 ```
 
 [Facade](/src/main/kotlin/Facade.kt)
@@ -733,19 +789,19 @@ class UserRepository {
 #### Usage
 
 ```kotlin
-    val userRepository = UserRepository()
-    val user = User("dbacinski")
-    userRepository.save(user)
-    val resultUser = userRepository.findFirst()
-    println("Found stored user: $resultUser")
+val userRepository = UserRepository()
+val user = User("dbacinski")
+userRepository.save(user)
+val resultUser = userRepository.findFirst()
+println("Found stored user: $resultUser")
 ```
 
 #### Ouput
 
 ```
-    Reading data from file: /data/default.prefs
-    Storing cached data: {USER_KEY=dbacinski} to file: /data/default.prefs
-    Found stored user: User(login=dbacinski)
+Reading data from file: /data/default.prefs
+Storing cached data: {USER_KEY=dbacinski} to file: /data/default.prefs
+Found stored user: User(login=dbacinski)
 ```
 
 [Protection Proxy](/src/main/kotlin/ProtectionProxy.kt)
@@ -784,19 +840,19 @@ class SecuredFile : File {
 #### Usage
 
 ```kotlin
-    val securedFile = SecuredFile()
-    securedFile.read("readme.md")
+val securedFile = SecuredFile()
+securedFile.read("readme.md")
 
-    securedFile.password = "secret"
-    securedFile.read("readme.md")
+securedFile.password = "secret"
+securedFile.read("readme.md")
 ```
 
 #### Ouput
 
 ```
-    Incorrect password. Access denied!
-    Password is correct: secret
-    Reading file: readme.md
+Incorrect password. Access denied!
+Password is correct: secret
+Reading file: readme.md
 ```
 
 Info

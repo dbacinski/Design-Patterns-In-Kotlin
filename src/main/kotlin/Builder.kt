@@ -47,20 +47,20 @@ class DialogBuilder() {
     fun build(): Dialog {
         val dialog = Dialog()
 
-        titleHolder?.let {
-            dialog.setTitle(it.text)
-            dialog.setTitleColor(it.color)
+        titleHolder?.apply {
+            dialog.setTitle(text)
+            dialog.setTitleColor(color)
             dialog.showTitle()
         }
 
-        messageHolder?.let {
-            dialog.setMessage(it.text)
-            dialog.setMessageColor(it.color)
+        messageHolder?.apply {
+            dialog.setMessage(text)
+            dialog.setMessageColor(color)
             dialog.showMessage()
         }
 
-        imageHolder?.let {
-            dialog.showImage(it.readBytes())
+        imageHolder?.apply {
+            dialog.showImage(readBytes())
         }
 
         return dialog
