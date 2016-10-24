@@ -1,36 +1,40 @@
-interface AuthorizationState {
-    fun isAuthorized(): Boolean
-    fun userId(): String?
+import AuthorizationState.Authorized
+import AuthorizationState.Unauthorized
+
+sealed class AuthorizationState {
+
+    class Unauthorized : AuthorizationState()
+
+    class Authorized(val userName: String) : AuthorizationState()
 }
 
-class UnauthorizedState() : AuthorizationState {
-    override fun isAuthorized(): Boolean = false
+class AuthorizationPresenter {
 
-    override fun userId(): String? = null
-}
-
-class AuthorizedState(val userName: String?) : AuthorizationState {
-    override fun isAuthorized(): Boolean = true
-
-    override fun userId(): String? = userName
-}
-
-class Authorization {
-    private var state: AuthorizationState = UnauthorizedState()
-
-    var isAuthorized: Boolean = false
-        get() = state.isAuthorized()
-
-    var userLogin: String? = null
-        get() = state.userId()
+    private var state: AuthorizationState = Unauthorized()
 
     fun loginUser(userLogin: String) {
-        state = AuthorizedState(userLogin)
+        state = Authorized(userLogin)
     }
 
-    fun logoutUser(userId: String) {
-        state = UnauthorizedState()
+    fun logoutUser() {
+        state = Unauthorized()
     }
+
+    val isAuthorized: Boolean
+        get() {
+            when (state) {
+                is Authorized -> return true
+                else -> return false
+            }
+        }
+
+    val userLogin: String
+        get() {
+            when (state) {
+                is Authorized -> return (state as Authorized).userName
+                is Unauthorized -> return "Unknown"
+            }
+        }
 
     override fun toString(): String {
         return "User '$userLogin' is logged in: $isAuthorized"
@@ -38,9 +42,9 @@ class Authorization {
 }
 
 fun main(args: Array<String>) {
-    val authorization = Authorization()
+    val authorization = AuthorizationPresenter()
     authorization.loginUser("admin")
-    println(authorization.toString())
-    authorization.logoutUser("admin")
-    println(authorization.toString())
+    println(authorization)
+    authorization.logoutUser()
+    println(authorization)
 }
