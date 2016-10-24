@@ -55,7 +55,6 @@ class TextView {
     var text: String by Delegates.observable("") { prop, old, new ->
         listener?.onTextChanged(new)
     }
-
 }
 ```
 
