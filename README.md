@@ -83,31 +83,26 @@ The strategy pattern is used to create an interchangeable family of algorithms f
 #### Example
 
 ```kotlin
-interface StringFormatter {
-    fun formatString(string: String): String
+class Printer(val stringFormatterStrategy: (String) -> String) {
+    fun printString(string: String) = println(stringFormatterStrategy.invoke(string))
 }
 
-class Printer(val strategy: StringFormatter) {
-    fun printString(string: String) = println(strategy.formatString(string))
-}
+val lowerCaseFormatter: (String) -> String = { it.toLowerCase() }
 
-class UpperCaseFormatter : StringFormatter {
-    override fun formatString(string: String): String = string.toUpperCase()
-}
-
-class LowerCaseFormatter : StringFormatter {
-    override fun formatString(string: String): String = string.toLowerCase()
-}
+val upperCaseFormatter = { it: String -> it.toUpperCase() }
 ```
 
 #### Usage
 
 ```kotlin
-val lowerCasePrinter = Printer(LowerCaseFormatter())
+val lowerCasePrinter = Printer(lowerCaseFormatter)
 lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 
-val upperCasePrinter = Printer(UpperCaseFormatter())
+val upperCasePrinter = Printer(upperCaseFormatter)
 upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+
+val prefixPrinter = Printer({ "Prefix: " + it })
+prefixPrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 
 #### Output
@@ -115,6 +110,7 @@ upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 ```
 lorem ipsum dolor sit amet
 LOREM IPSUM DOLOR SIT AMET
+Prefix: LOREM ipsum DOLOR sit amet
 ```
 
 [Command](/src/main/kotlin/Command.kt)
