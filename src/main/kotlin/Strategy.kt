@@ -1,23 +1,19 @@
-interface StringFormatter {
-    fun formatString(string: String): String
+class Printer(val stringFormatterStrategy: (String) -> String) {
+    fun printString(string: String) = println(stringFormatterStrategy.invoke(string))
 }
 
-class Printer(val strategy: StringFormatter) {
-    fun printString(string: String) = println(strategy.formatString(string))
-}
+val lowerCaseFormatter: (String) -> String = { it.toLowerCase() }
 
-class UpperCaseFormatter : StringFormatter {
-    override fun formatString(string: String): String = string.toUpperCase()
-}
-
-class LowerCaseFormatter : StringFormatter {
-    override fun formatString(string: String): String = string.toLowerCase()
-}
+val upperCaseFormatter = { it: String -> it.toUpperCase() }
 
 fun main(args: Array<String>) {
-    val lowerCasePrinter = Printer(LowerCaseFormatter())
+
+    val lowerCasePrinter = Printer(lowerCaseFormatter)
     lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
 
-    val upperCasePrinter = Printer(UpperCaseFormatter())
+    val upperCasePrinter = Printer(upperCaseFormatter)
     upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+
+    val prefixPrinter = Printer({ "Prefix: " + it })
+    prefixPrinter.printString("LOREM ipsum DOLOR sit amet")
 }
