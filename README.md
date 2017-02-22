@@ -1,5 +1,7 @@
 # Design Patterns In Kotlin
 
+#### :warning: Check my newest article [Introduction to Unit Testing with Kotlin](https://github.com/dbacinski/Android-Testing-With-Kotlin/blob/master/Unit-Testing-Introduction.md)
+
 Project maintained by [@dbacinski](http://twitter.com/dbacinski) (Dariusz Baciński)
 
 Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-In-Swift) by [@nsmeme](http://twitter.com/nsmeme) (Oktawian Chojnacki)
