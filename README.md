@@ -706,16 +706,17 @@ class NormalCoffeeMachine : CoffeeMachine {
 //Decorator:
 class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by coffeeMachine {
 
+    // overriding behaviour
+    override fun makeLargeCoffee() {
+        println("Enhanced: Making large coffee")
+        coffeeMachine.makeLargeCoffee()
+    }
+
+    // extended behaviour
     fun makeCoffeeWithMilk() {
         println("Enhanced: Making coffee with milk")
         coffeeMachine.makeSmallCoffee()
         println("Enhanced: Adding milk")
-    }
-
-    fun makeDoubleLargeCoffee() {
-        println("Enhanced: Making double large coffee")
-        coffeeMachine.makeLargeCoffee()
-        coffeeMachine.makeLargeCoffee()
     }
 }
 ```
@@ -723,24 +724,28 @@ class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by
 #### Usage
 
 ```kotlin
-val normalMachine = NormalCoffeeMachine()
-val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+    val normalMachine = NormalCoffeeMachine()
+    val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
 
-enhancedMachine.makeCoffeeWithMilk()
-
-enhancedMachine.makeDoubleLargeCoffee()
+    // non-overridden behaviour
+    enhancedMachine.makeSmallCoffee()
+    // overriding behaviour
+    enhancedMachine.makeLargeCoffee()
+    // extended behaviour
+    enhancedMachine.makeCoffeeWithMilk()
 ```
 
 #### Output
 
 ```
+Normal: Making small coffee
+
+Enhanced: Making large coffee
+Normal: Making large coffee
+
 Enhanced: Making coffee with milk
 Normal: Making small coffee
 Enhanced: Adding milk
-
-Enhanced: Making double large coffee
-Normal: Making large coffee
-Normal: Making large coffee
 ```
 
 [Facade](/src/main/kotlin/Facade.kt)
