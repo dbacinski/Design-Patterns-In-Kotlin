@@ -209,14 +209,6 @@ class AuthorizationPresenter {
 
     override fun toString() = "User '$userLogin' is logged in: $isAuthorized"
 }
-
-fun main(args: Array<String>) {
-    val authorization = AuthorizationPresenter()
-    authorization.loginUser("admin")
-    println(authorization)
-    authorization.logoutUser()
-    println(authorization)
-}
 ```
 
 #### Usage
