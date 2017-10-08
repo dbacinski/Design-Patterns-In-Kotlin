@@ -1,12 +1,8 @@
-import AuthorizationState.Authorized
-import AuthorizationState.Unauthorized
+sealed class AuthorizationState
 
-sealed class AuthorizationState {
+class Unauthorized : AuthorizationState() // may be an object: object Unauthorized : AuthorizationState()
 
-    class Unauthorized : AuthorizationState()
-
-    class Authorized(val userName: String) : AuthorizationState()
-}
+class Authorized(val userName: String) : AuthorizationState()
 
 class AuthorizationPresenter {
 
@@ -21,24 +17,18 @@ class AuthorizationPresenter {
     }
 
     val isAuthorized: Boolean
-        get() {
-            when (state) {
-                is Authorized -> return true
-                else -> return false
-            }
+        get() = when (state) {
+            is Authorized -> true
+            is Unauthorized -> false
         }
 
     val userLogin: String
-        get() {
-            when (state) {
-                is Authorized -> return (state as Authorized).userName
-                is Unauthorized -> return "Unknown"
-            }
+        get() = when (state) {
+            is Authorized -> (state as Authorized).userName
+            is Unauthorized -> "Unknown"
         }
 
-    override fun toString(): String {
-        return "User '$userLogin' is logged in: $isAuthorized"
-    }
+    override fun toString() = "User '$userLogin' is logged in: $isAuthorized"
 }
 
 fun main(args: Array<String>) {
@@ -48,3 +38,4 @@ fun main(args: Array<String>) {
     authorization.logoutUser()
     println(authorization)
 }
+

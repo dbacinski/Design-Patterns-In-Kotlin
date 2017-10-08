@@ -36,7 +36,7 @@ Behavioral
 [Observer / Listener](/src/main/kotlin/Listener.kt)
 --------
 
-The observer pattern is used to allow an object to publish changes to its state. 
+The observer pattern is used to allow an object to publish changes to its state.
 Other objects subscribe to be immediately notified of any changes.
 
 #### Example
@@ -171,18 +171,17 @@ paying for order with id: 1
 [State](/src/main/kotlin/State.kt)
 ------
 
-The state pattern is used to alter the behaviour of an object as its internal state changes. 
+The state pattern is used to alter the behaviour of an object as its internal state changes.
 The pattern allows the class for an object to apparently change at run-time.
 
 #### Example
 
 ```kotlin
-sealed class AuthorizationState {
+sealed class AuthorizationState
 
-    class Unauthorized : AuthorizationState()
+class Unauthorized : AuthorizationState() // may be an object: object Unauthorized : AuthorizationState()
 
-    class Authorized(val userName: String) : AuthorizationState()
-}
+class Authorized(val userName: String) : AuthorizationState()
 
 class AuthorizationPresenter {
 
@@ -197,24 +196,18 @@ class AuthorizationPresenter {
     }
 
     val isAuthorized: Boolean
-        get() {
-            when (state) {
-                is Authorized -> return true
-                else -> return false
-            }
+        get() = when (state) {
+            is Authorized -> true
+            is Unauthorized -> false
         }
 
     val userLogin: String
-        get() {
-            when (state) {
-                is Authorized -> return (state as Authorized).userName
-                is Unauthorized -> return "Unknown"
-            }
+        get() = when (state) {
+            is Authorized -> (state as Authorized).userName
+            is Unauthorized -> "Unknown"
         }
 
-    override fun toString(): String {
-        return "User '$userLogin' is logged in: $isAuthorized"
-    }
+    override fun toString() = "User '$userLogin' is logged in: $isAuthorized"
 }
 ```
 
@@ -257,7 +250,7 @@ class AuthenticationHeader(val token: String?, var next: MessageChain? = null) :
 
 class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
 
-    override fun addLines(inputHeader: String): String 
+    override fun addLines(inputHeader: String): String
             = "$inputHeader ContentType: $contentType\n".let { next?.addLines(it) ?: it }
 }
 
@@ -278,7 +271,7 @@ val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
 val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
 val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
 println(messageWithAuthentication)
-    
+
 fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
     authenticationHeader.next = contentTypeHeader
     contentTypeHeader.next = messageBody
@@ -372,7 +365,7 @@ Creational
 [Builder / Assembler](/src/main/kotlin/Builder.kt)
 ----------
 
-The builder pattern is used to create complex objects with constituent parts that must be created in the same order or using a specific algorithm. 
+The builder pattern is used to create complex objects with constituent parts that must be created in the same order or using a specific algorithm.
 An external class controls the construction algorithm.
 
 #### Example
@@ -580,7 +573,7 @@ Printing with object: PrinterDriver@6ff3c5b5
 [Abstract Factory](/src/main/kotlin/AbstractFactory.kt)
 -------------------
 
-The abstract factory pattern is used to provide a client with a set of related or dependant objects. 
+The abstract factory pattern is used to provide a client with a set of related or dependant objects.
 The "family" of objects created by the factory are determined at run-time.
 
 #### Example
@@ -686,7 +679,7 @@ println("${fahrenheitTemperature.temperature} F -> ${celsiusTemperature.temperat
 [Decorator](/src/main/kotlin/Decorator.kt)
 ------------
 
-The decorator pattern is used to extend or alter the functionality of objects at run-time by wrapping them in an object of a decorator class. 
+The decorator pattern is used to extend or alter the functionality of objects at run-time by wrapping them in an object of a decorator class.
 This provides a flexible alternative to using inheritance to modify behaviour.
 
 #### Example
@@ -809,7 +802,7 @@ Found stored user: User(login=dbacinski)
 [Protection Proxy](/src/main/kotlin/ProtectionProxy.kt)
 ------------------
 
-The proxy pattern is used to provide a surrogate or placeholder object, which references an underlying object. 
+The proxy pattern is used to provide a surrogate or placeholder object, which references an underlying object.
 Protection proxy is restricting access.
 
 #### Example
