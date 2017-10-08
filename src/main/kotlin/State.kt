@@ -17,11 +17,9 @@ class AuthorizationPresenter {
     }
 
     val isAuthorized: Boolean
-        get() {
-            when (state) {
-                is Authorized -> return true
-                else -> return false
-            }
+        get() = when (state) {
+            is Authorized -> true
+            is Unauthorized -> false
         }
 
     val userLogin: String
@@ -40,3 +38,4 @@ fun main(args: Array<String>) {
     authorization.logoutUser()
     println(authorization)
 }
+
