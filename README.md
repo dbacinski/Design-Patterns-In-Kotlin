@@ -609,7 +609,7 @@ class OrangeFactory : PlantFactory() {
 #### Usage
 
 ```kotlin
-val plantFactory = PlantFactory.createFactory(OrangePlant::class)
+val plantFactory = PlantFactory.createFactory<OrangePlant>()
 val plant = plantFactory.makePlant()
 println("Created plant: $plant")
 ```
