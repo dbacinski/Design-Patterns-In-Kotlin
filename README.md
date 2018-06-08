@@ -503,9 +503,9 @@ enum class Country {
 class CurrencyFactory {
     fun currencyForCountry(country: Country): Currency? {
         return when (country) {
-                    Country.Spain, Country.Greece -> Euro()
-                    Country.UnitedStates          -> UnitedStatesDollar()
-                    else                          -> null
+            Country.Spain, Country.Greece -> Euro()
+            Country.UnitedStates          -> UnitedStatesDollar()
+            else                          -> null
                 }
     }
 }
