@@ -502,11 +502,11 @@ enum class Country {
 
 class CurrencyFactory {
     fun currencyForCountry(country: Country): Currency? {
-        when (country) {
-            Country.Spain, Country.Greece -> return Euro()
-            Country.UnitedStates          -> return UnitedStatesDollar()
-            else                          -> return null
-        }
+        return when (country) {
+            Country.Spain, Country.Greece -> Euro()
+            Country.UnitedStates          -> UnitedStatesDollar()
+            else                          -> null
+                }
     }
 }
 ```
@@ -516,13 +516,13 @@ class CurrencyFactory {
 ```kotlin
 val noCurrencyCode = "No Currency Code Available"
 
-val greeceCode = CurrencyFactory().currencyForCountry(Country.Greece)?.code() ?: noCurrencyCode
+val greeceCode = CurrencyFactory().currencyForCountry(Country.Greece)?.code ?: noCurrencyCode
 println("Greece currency: $greeceCode")
 
-val usCode = CurrencyFactory().currencyForCountry(Country.UnitedStates)?.code() ?: noCurrencyCode
+val usCode = CurrencyFactory().currencyForCountry(Country.UnitedStates)?.code ?: noCurrencyCode
 println("US currency: $usCode")
 
-val ukCode = CurrencyFactory().currencyForCountry(Country.UK)?.code() ?: noCurrencyCode
+val ukCode = CurrencyFactory().currencyForCountry(Country.UK)?.code ?: noCurrencyCode
 println("UK currency: $ukCode")
 ```
 
