@@ -358,7 +358,7 @@ Monthly cost: 5333
 [Mediator](/src/main/kotlin/Mediator.kt)
 -------
 
-Mediator design pattern is used to provide a centralized communication medium between different objects in a system. Mediator design pattern is very helpful in an enterprise application where multiple objects are interacting with each other.
+Mediator design pattern is used to provide a centralized communication medium between different objects in a system. This pattern is very helpful in an enterprise application where multiple objects are interacting with each other.
 #### Example
 
 ```kotlin
@@ -371,7 +371,6 @@ class ChatUser(val mediator: ChatMediator, val name: String){
     fun receive(msg: String) {
         println("${name}: Message received: ${msg}")
     }
-
 }
 
 class ChatMediator {
@@ -379,25 +378,25 @@ class ChatMediator {
 
     fun sendMessage(msg: String, user: ChatUser) {
         users.forEach {
-            if (it !== user)
+            if (it !== user) {
                 it.receive(msg)
+	    }
         }
     }
 
     fun addUser(user: ChatUser) {
         users.add(user)
     }
-
 }
 ```
 
 #### Usage
 
 ```kotlin
-  val mediatorImpl = ChatMediator()
+  val mediator = ChatMediator()
   val john = ChatUser(mediatorImpl, "John")
 
-  with(mediatorImpl) {
+  with(mediator) {
       addUser(ChatUser(this, "User1"))
       addUser(ChatUser(this, "User2"))
       addUser(ChatUser(this, "User3"))
