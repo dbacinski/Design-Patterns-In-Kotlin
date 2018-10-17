@@ -15,6 +15,7 @@ Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-
 	* [State](#state)
 	* [Chain of Responsibility](#chain-of-responsibility)
 	* [Visitor](#visitor)
+	* [Mediator](#mediator)
 * [Creational Patterns](#creational)
 	* [Builder / Assembler](#builder--assembler)
 	* [Factory Method](#factory-method)
@@ -354,13 +355,73 @@ println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
 Monthly cost: 5333
 ```
 
+[Mediator](/src/main/kotlin/Mediator.kt)
+-------
+
+Mediator design pattern is used to provide a centralized communication medium between different objects in a system. Mediator design pattern is very helpful in an enterprise application where multiple objects are interacting with each other.
+#### Example
+
+```kotlin
+class ChatUser(val mediator: ChatMediator, val name: String){
+    fun send(msg: String) {
+        println("${name}: Sending Message= ${msg}")
+        mediator.sendMessage(msg, this)
+    }
+
+    fun receive(msg: String) {
+        println("${name}: Message received: ${msg}")
+    }
+
+}
+
+class ChatMediator {
+    private val users: MutableList<ChatUser> = ArrayList()
+
+    fun sendMessage(msg: String, user: ChatUser) {
+        users.forEach {
+            if (it !== user)
+                it.receive(msg)
+        }
+    }
+
+    fun addUser(user: ChatUser) {
+        users.add(user)
+    }
+
+}
+```
+
+#### Usage
+
+```kotlin
+  val mediatorImpl = ChatMediator()
+  val john = ChatUser(mediatorImpl, "John")
+
+  with(mediatorImpl) {
+      addUser(ChatUser(this, "User1"))
+      addUser(ChatUser(this, "User2"))
+      addUser(ChatUser(this, "User3"))
+      addUser(john)
+  }
+
+  john.send("Hi everyone!")
+```
+
+#### Output
+
+```
+John: Sending Message= Hi everyone!
+User1: Message received: Hi everyone!
+User2: Message received: Hi everyone!
+User3: Message received: Hi everyone!
+```
+
 Creational
 ==========
 
 > In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controlling this object creation.
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Creational_pattern)
-
 
 [Builder / Assembler](/src/main/kotlin/Builder.kt)
 ----------
