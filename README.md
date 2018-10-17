@@ -394,7 +394,7 @@ class ChatMediator {
 
 ```kotlin
   val mediator = ChatMediator()
-  val john = ChatUser(mediatorImpl, "John")
+  val john = ChatUser(mediator, "John")
 
   with(mediator) {
       addUser(ChatUser(this, "User1"))
