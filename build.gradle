@@ -19,6 +19,6 @@ repositories {
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    compile("org.jetbrains.kotlin:kotlin-reflect")
+    implemantation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implemantation("org.jetbrains.kotlin:kotlin-reflect")
 }
