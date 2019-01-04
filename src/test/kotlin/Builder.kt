@@ -3,7 +3,7 @@ import java.io.File
 // Let's assume that Dialog class is provided by external library.
 // We have only access to Dialog public interface which cannot be changed.
 
-class Dialog() {
+class Dialog {
 
     fun showTitle() = println("showing title")
 
