@@ -8,7 +8,7 @@ interface Temperature {
 
 class CelsiusTemperature(override var temperature: Double) : Temperature
 
-class FahrenheitTemperature(var celsiusTemperature: CelsiusTemperature) : Temperature {
+class FahrenheitTemperature(private var celsiusTemperature: CelsiusTemperature) : Temperature {
 
     override var temperature: Double
         get() = convertCelsiusToFahrenheit(celsiusTemperature.temperature)
