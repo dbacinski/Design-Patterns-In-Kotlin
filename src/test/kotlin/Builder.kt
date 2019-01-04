@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Test
 import java.io.File
 
 // Let's assume that Dialog class is provided by external library.
@@ -5,25 +6,18 @@ import java.io.File
 
 class Dialog {
 
-    fun showTitle() = println("showing title")
-
     fun setTitle(text: String) = println("setting title text $text")
-
     fun setTitleColor(color: String) = println("setting title color $color")
-
-    fun showMessage() = println("showing message")
-
     fun setMessage(text: String) = println("setting message $text")
-
     fun setMessageColor(color: String) = println("setting message color $color")
-
-    fun showImage(bitmapBytes: ByteArray) = println("showing image with size ${bitmapBytes.size}")
+    fun setImage(bitmapBytes: ByteArray) = println("setting image with size ${bitmapBytes.size}")
 
     fun show() = println("showing dialog $this")
 }
 
-//Builder:
+// Builder
 class DialogBuilder() {
+
     constructor(init: DialogBuilder.() -> Unit) : this() {
         init()
     }
@@ -32,35 +26,34 @@ class DialogBuilder() {
     private var messageHolder: TextView? = null
     private var imageHolder: File? = null
 
-    fun title(init: TextView.() -> Unit) {
-        titleHolder = TextView().apply { init() }
+    fun title(attributes: TextView.() -> Unit) {
+        titleHolder = TextView().apply { attributes() }
     }
 
-    fun message(init: TextView.() -> Unit) {
-        messageHolder = TextView().apply { init() }
+    fun message(attributes: TextView.() -> Unit) {
+        messageHolder = TextView().apply { attributes() }
     }
 
-    fun image(init: () -> File) {
-        imageHolder = init()
+    fun image(attributes: () -> File) {
+        imageHolder = attributes()
     }
 
     fun build(): Dialog {
+        println("build")
         val dialog = Dialog()
 
         titleHolder?.apply {
             dialog.setTitle(text)
             dialog.setTitleColor(color)
-            dialog.showTitle()
         }
 
         messageHolder?.apply {
             dialog.setMessage(text)
             dialog.setMessageColor(color)
-            dialog.showMessage()
         }
 
         imageHolder?.apply {
-            dialog.showImage(readBytes())
+            dialog.setImage(readBytes())
         }
 
         return dialog
@@ -73,24 +66,32 @@ class DialogBuilder() {
 }
 
 //Function that creates dialog builder and builds Dialog
-fun dialog(init: DialogBuilder.() -> Unit): Dialog {
-    return DialogBuilder(init).build()
-}
+fun dialog(init: DialogBuilder.() -> Unit): Dialog =
+    DialogBuilder(init).build()
 
-fun main(args: Array<String>) {
+class BuilderTest {
 
-    val dialog: Dialog = dialog {
-        title {
-            text = "Dialog Title"
-        }
-        message {
-            text = "Dialog Message"
-            color = "#333333"
-        }
-        image {
-            File.createTempFile("image", "jpg")
-        }
+    @Test
+    fun `Builder`() {
+
+        println("Build dialog")
+
+        val dialog: Dialog =
+            dialog {
+                title {
+                    text = "Dialog Title"
+                }
+                message {
+                    text = "Dialog Message"
+                    color = "#333333"
+                }
+                image {
+                    File.createTempFile("image", "jpg")
+                }
+            }
+
+        println("Show dialog")
+
+        dialog.show()
     }
-
-    dialog.show()
 }
