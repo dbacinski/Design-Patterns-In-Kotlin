@@ -1,50 +1,79 @@
-interface MessageChain {
-    fun addLines(inputHeader: String): String
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+interface HeadersChain {
+    fun addHeader(inputHeader: String): String
 }
 
-class AuthenticationHeader(val token: String?, var next: MessageChain? = null) : MessageChain {
+class AuthenticationHeader(val token: String?, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String {
+    override fun addHeader(inputHeader: String): String {
         token ?: throw IllegalStateException("Token should be not null")
-        return "$inputHeader Authorization: Bearer $token\n".let { next?.addLines(it) ?: it }
+        return inputHeader + "Authorization: Bearer $token\n"
+            .let { next?.addHeader(it) ?: it }
     }
 }
 
-class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
+class ContentTypeHeader(val contentType: String, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String
-            = "$inputHeader ContentType: $contentType\n".let { next?.addLines(it) ?: it }
+    override fun addHeader(inputHeader: String): String =
+        inputHeader + "ContentType: $contentType\n"
+            .let { next?.addHeader(it) ?: it }
 }
 
-class BodyPayload(val body: String, var next: MessageChain? = null) : MessageChain {
+class BodyPayload(val body: String, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String
-            = "$inputHeader $body\n".let { next?.addLines(it) ?: it }
+    override fun addHeader(inputHeader: String): String =
+        inputHeader + "$body"
+            .let { next?.addHeader(it) ?: it }
 }
 
-fun main(args: Array<String>) {
-    val authenticationHeader = AuthenticationHeader("123456")
-    val contentTypeHeader = ContentTypeHeader("json")
-    val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
+class ChainOfResponsibilityTest {
 
-    val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
-    val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
-    println(messageWithAuthentication)
+    @Test
+    internal fun `Chain Of Responsibility`() {
+        //create chain elements
+        val authenticationHeader = AuthenticationHeader("123456")
+        val contentTypeHeader = ContentTypeHeader("json")
+        val messageBody = BodyPayload("Body:\n{\n\"username\"=\"dbacinski\"\n}")
 
-    val messageChainUnauthenticated = messageChainUnauthenticated(contentTypeHeader, messageBody)
-    val message = messageChainUnauthenticated.addLines("Message:\n")
-    println(message)
-}
+        //construct chain
+        authenticationHeader.next = contentTypeHeader
+        contentTypeHeader.next = messageBody
 
-private fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
-    authenticationHeader.next = contentTypeHeader
-    contentTypeHeader.next = messageBody
-    return authenticationHeader
-}
+        //execute chain
+        val messageWithAuthentication =
+            authenticationHeader.addHeader("Headers with Authentication:\n")
 
-private fun messageChainUnauthenticated(contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
-    contentTypeHeader.next = messageBody
-    return contentTypeHeader
+        println(messageWithAuthentication)
+
+        val messageWithoutAuth =
+            contentTypeHeader.addHeader("Headers:\n")
+        println(messageWithoutAuth)
+
+        assertThat(messageWithAuthentication).isEqualTo(
+            """
+                Headers with Authentication:
+                Authorization: Bearer 123456
+                ContentType: json
+                Body:
+                {
+                "username"="dbacinski"
+                }
+            """.trimIndent()
+        )
+
+        assertThat(messageWithoutAuth).isEqualTo(
+            """
+                Headers:
+                ContentType: json
+                Body:
+                {
+                "username"="dbacinski"
+                }
+            """.trimIndent()
+        )
+    }
 }
 
 
