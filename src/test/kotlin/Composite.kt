@@ -1,40 +1,31 @@
-open class Equipment(private var price: Int, private var name: String) {
-    open fun getPrice(): Int = price
-}
-
-
-/*
-[composite]
-*/
+open class Equipment(
+    open val price: Int,
+    val name: String
+)
 
 open class Composite(name: String) : Equipment(0, name) {
-    val equipments = ArrayList<Equipment>()
 
-    fun add(equipment: Equipment) {
-        this.equipments.add(equipment);
-    }
+    private val equipments = ArrayList<Equipment>()
 
-    override fun getPrice(): Int {
-        return equipments.map { it -> it.getPrice() }.sum()
-    }
+    override val price: Int
+        get() = equipments.map { it -> it.price }.sum()
+
+
+    fun add(equipment: Equipment) =
+        apply { equipments.add(equipment) }
 }
 
-
-/*
- leafs
-*/
-
-class Cabbinet : Composite("cabbinet")
-class FloppyDisk : Equipment(70, "Floppy Disk")
+class PersonalComputer : Composite("PC")
+class Processor : Equipment(1070, "Processor")
 class HardDrive : Equipment(250, "Hard Drive")
 class Memory : Equipment(280, "Memory")
 
 
 fun main(args: Array<String>) {
-    var cabbinet = Cabbinet()
-    cabbinet.add(FloppyDisk())
-    cabbinet.add(HardDrive())
-    cabbinet.add(Memory())
-    println(cabbinet.getPrice())
+    val pc = PersonalComputer()
+        .add(Processor())
+        .add(HardDrive())
+        .add(Memory())
 
+    println(pc.price)
 }
