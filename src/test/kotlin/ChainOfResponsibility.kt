@@ -31,7 +31,7 @@ class BodyPayload(val body: String, var next: HeadersChain? = null) : HeadersCha
 class ChainOfResponsibilityTest {
 
     @Test
-    internal fun `Chain Of Responsibility`() {
+    fun `Chain Of Responsibility`() {
         //create chain elements
         val authenticationHeader = AuthenticationHeader("123456")
         val contentTypeHeader = ContentTypeHeader("json")

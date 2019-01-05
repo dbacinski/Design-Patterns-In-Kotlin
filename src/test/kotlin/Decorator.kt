@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test
+
 interface CoffeeMachine {
     fun makeSmallCoffee()
     fun makeLargeCoffee()
@@ -15,25 +17,32 @@ class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by
     // overriding behaviour
     override fun makeLargeCoffee() {
         println("Enhanced: Making large coffee")
-        coffeeMachine.makeLargeCoffee()
     }
 
     // extended behaviour
     fun makeCoffeeWithMilk() {
         println("Enhanced: Making coffee with milk")
         coffeeMachine.makeSmallCoffee()
+        addMilk()
+    }
+
+    private fun addMilk() {
         println("Enhanced: Adding milk")
     }
 }
 
-fun main(args: Array<String>) {
-    val normalMachine = NormalCoffeeMachine()
-    val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+class DecoratorTest {
 
-    // non-overridden behaviour
-    enhancedMachine.makeSmallCoffee()
-    // overriding behaviour
-    enhancedMachine.makeLargeCoffee()
-    // extended behaviour
-    enhancedMachine.makeCoffeeWithMilk()
+    @Test
+    fun `Decorator`() {
+        val normalMachine = NormalCoffeeMachine()
+        val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+
+        // non-overridden behaviour
+        enhancedMachine.makeSmallCoffee()
+        // overridden behaviour
+        enhancedMachine.makeLargeCoffee()
+        // extended behaviour
+        enhancedMachine.makeCoffeeWithMilk()
+    }
 }
