@@ -1,3 +1,6 @@
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
 open class Equipment(
     open val price: Int,
     val name: String
@@ -21,11 +24,18 @@ class HardDrive : Equipment(250, "Hard Drive")
 class Memory : Equipment(280, "Memory")
 
 
-fun main(args: Array<String>) {
-    val pc = PersonalComputer()
-        .add(Processor())
-        .add(HardDrive())
-        .add(Memory())
+class CompositeTest {
 
-    println(pc.price)
+    @Test
+    fun `Composite`() {
+        val pc = PersonalComputer()
+            .add(Processor())
+            .add(HardDrive())
+            .add(Memory())
+
+        println(pc.price)
+
+        assertThat(pc.name).isEqualTo("PC")
+        assertThat(pc.price).isEqualTo(1600)
+    }
 }
