@@ -1,3 +1,4 @@
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 sealed class Country {
@@ -28,10 +29,13 @@ class FactoryMethodTest {
 
     @Test
     fun `FactoryMethod`() {
-        val greeceCode = CurrencyFactory().currencyForCountry(Greece("")).code
-        println("Greece currency: $greeceCode")
+        val greeceCurrency = CurrencyFactory().currencyForCountry(Greece("")).code
+        println("Greece currency: $greeceCurrency")
 
-        val usCode = CurrencyFactory().currencyForCountry(Country.USA).code
-        println("USA currency: $usCode")
+        val usaCurrency = CurrencyFactory().currencyForCountry(Country.USA).code
+        println("USA currency: $usaCurrency")
+
+        assertThat(greeceCurrency).isEqualTo("EUR")
+        assertThat(usaCurrency).isEqualTo("USD")
     }
 }
