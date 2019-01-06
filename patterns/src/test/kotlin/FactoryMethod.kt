@@ -2,7 +2,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 sealed class Country {
-    object USA : Country() //Kotlin 1.0 subclass could only be an inner class or object
+    object USA : Country() //Kotlin 1.0 could only be an inner class or object
 }
 
 object Spain : Country() //Kotlin 1.1 declared as top level class/object in the same file
