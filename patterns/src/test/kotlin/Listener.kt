@@ -1,26 +1,41 @@
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import kotlin.properties.Delegates
 
 interface TextChangedListener {
-    fun onTextChanged(newText: String)
+
+    fun onTextChanged(oldText: String, newText: String)
 }
 
 class PrintingTextChangedListener : TextChangedListener {
-    override fun onTextChanged(newText: String) = println("Text is changed to: $newText")
+
+    override fun onTextChanged(oldText: String, newText: String) =
+        println("Text is changed $oldText -> $newText")
 }
 
 class TextView {
 
     var listener: TextChangedListener? = null
 
-    var text: String by Delegates.observable("") { prop, old, new ->
-        listener?.onTextChanged(new)
+    var text: String by Delegates.observable("<empty>") { _, old, new ->
+        listener?.onTextChanged(old, new)
     }
 }
 
-fun main(args: Array<String>) {
-    val textView = TextView()
-    textView.listener = PrintingTextChangedListener()
-    textView.text = "Lorem ipsum"
-    textView.text = "dolor sit amet"
+class ListenerTest {
+
+    @Test
+    fun `Listener`() {
+        val textView = TextView().apply {
+            listener = PrintingTextChangedListener()
+        }
+
+        with(textView) {
+            text = "Lorem ipsum"
+            text = "dolor sit amet"
+        }
+
+        assertThat(textView.listener).isNotNull()
+    }
 }
 
