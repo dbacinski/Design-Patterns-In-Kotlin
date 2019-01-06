@@ -1,27 +1,28 @@
-import java.util.*
+class ComplexSystemStore(private val filePath: String) {
 
-class ComplexSystemStore(val filePath: String) {
+    private val cache: HashMap<String, String>
 
     init {
         println("Reading data from file: $filePath")
+        cache = HashMap()
+        //read properties from file and put to store cache
     }
-
-    val store = HashMap<String, String>()
 
     fun store(key: String, payload: String) {
-        store.put(key, payload)
+        cache[key] = payload
     }
 
-    fun read(key: String): String = store[key] ?: ""
+    fun read(key: String): String = cache[key] ?: ""
 
-    fun commit() = println("Storing cached data: $store to file: $filePath")
+    fun commit() = println("Storing cached data: $cache to file: $filePath")
 }
 
 data class User(val login: String)
 
 //Facade:
 class UserRepository {
-    val systemPreferences = ComplexSystemStore("/data/default.prefs")
+
+    private val systemPreferences = ComplexSystemStore("/data/default.prefs")
 
     fun save(user: User) {
         systemPreferences.store("USER_KEY", user.login)
