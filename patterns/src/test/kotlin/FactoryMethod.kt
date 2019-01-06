@@ -5,7 +5,7 @@ sealed class Country {
     object USA : Country() //Kotlin 1.0 subclass could only be an inner class or object
 }
 
-object Spain : Country() //Kotlin 1.1 declared as top level class in the same file
+object Spain : Country() //Kotlin 1.1 declared as top level class/object in the same file
 class Greece(val someProperty: String) : Country()
 data class Canada(val someProperty: String) : Country() //Kotlin 1.1 data class extends other class
 //object Poland : Country()
