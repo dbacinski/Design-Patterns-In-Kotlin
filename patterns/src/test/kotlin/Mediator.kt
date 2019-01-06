@@ -1,41 +1,46 @@
-class ChatUser(val mediator: ChatMediator, val name: String){
+import org.junit.jupiter.api.Test
+
+class ChatUser(private val mediator: ChatMediator, val name: String) {
     fun send(msg: String) {
-        println("${name}: Sending Message= ${msg}")
+        println("$name: Sending Message= $msg")
         mediator.sendMessage(msg, this)
     }
 
     fun receive(msg: String) {
-        println("${name}: Message received: ${msg}")
+        println("$name: Message received: $msg")
     }
-
 }
 
 class ChatMediator {
+
     private val users: MutableList<ChatUser> = ArrayList()
 
     fun sendMessage(msg: String, user: ChatUser) {
-        users.forEach {
-            if (it !== user)
+        users
+            .filter { it != user }
+            .forEach {
                 it.receive(msg)
-        }
+            }
     }
 
-    fun addUser(user: ChatUser) {
-        users.add(user)
-    }
+    fun addUser(user: ChatUser): ChatMediator =
+        apply { users.add(user) }
 
 }
 
-fun main(args: Array<String>) {
-    val mediatorImpl = ChatMediator()
-    val john = ChatUser(mediatorImpl, "John")
+class MediatorTest {
 
-    with(mediatorImpl) {
-        addUser(ChatUser(this, "User1"))
-        addUser(ChatUser(this, "User2"))
-        addUser(ChatUser(this, "User3"))
-        addUser(john)
+    @Test
+    fun `Mediator`() {
+        val mediator = ChatMediator()
+
+        val john = ChatUser(mediator, "John")
+
+        mediator
+            .addUser(ChatUser(mediator, "Alice"))
+            .addUser(ChatUser(mediator, "Bob"))
+            .addUser(john)
+
+        john.send("Hi everyone!")
     }
-
-    john.send("Hi everyone!")
 }
