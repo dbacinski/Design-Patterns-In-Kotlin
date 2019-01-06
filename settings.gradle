@@ -1,1 +1,2 @@
+include ':patterns'
 rootProject.name = 'design-patterns-kotlin'
