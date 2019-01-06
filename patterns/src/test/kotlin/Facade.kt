@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test
+
 class ComplexSystemStore(private val filePath: String) {
 
     private val cache: HashMap<String, String>
@@ -5,7 +7,7 @@ class ComplexSystemStore(private val filePath: String) {
     init {
         println("Reading data from file: $filePath")
         cache = HashMap()
-        //read properties from file and put to store cache
+        //read properties from file and put to cache
     }
 
     fun store(key: String, payload: String) {
@@ -32,10 +34,14 @@ class UserRepository {
     fun findFirst(): User = User(systemPreferences.read("USER_KEY"))
 }
 
-fun main(args: Array<String>) {
-    val userRepository = UserRepository()
-    val user = User("dbacinski")
-    userRepository.save(user)
-    val resultUser = userRepository.findFirst()
-    println("Found stored user: $resultUser")
+class FacadeTest {
+
+    @Test
+    fun `Facade`() {
+        val userRepository = UserRepository()
+        val user = User("dbacinski")
+        userRepository.save(user)
+        val resultUser = userRepository.findFirst()
+        println("Found stored user: $resultUser")
+    }
 }
