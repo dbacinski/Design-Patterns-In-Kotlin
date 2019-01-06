@@ -1,3 +1,6 @@
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
 data class Memento(val state: String)
 
 class Originator(var state: String) {
@@ -23,25 +26,28 @@ class CareTaker {
     }
 }
 
-fun main(args: Array<String>) {
-    val originator = Originator("initial state")
-    val careTaker = CareTaker()
-    careTaker.saveState(originator.createMemento())
+class MementoTest {
 
-    originator.state = "State #1"
-    originator.state = "State #2"
-    careTaker.saveState(originator.createMemento())
+    @Test
+    fun `Memento`() {
+        val originator = Originator("initial state")
+        val careTaker = CareTaker()
+        careTaker.saveState(originator.createMemento())
 
-    originator.state = "State #3"
-    careTaker.saveState(originator.createMemento())
+        originator.state = "State #1"
+        originator.state = "State #2"
+        careTaker.saveState(originator.createMemento())
 
-    originator.state = "State #4"
-    println("Current State: " + originator.state)
+        originator.state = "State #3"
+        println("Current State: " + originator.state)
+        assertThat(originator.state).isEqualTo("State #3")
 
-    originator.restore(careTaker.restore(0))
-    println("First saved State: " + originator.state)
-    originator.restore(careTaker.restore(1))
-    println("Second saved State: " + originator.state)
-    originator.restore(careTaker.restore(2))
-    println("Second saved State: " + originator.state)
+        originator.restore(careTaker.restore(1))
+        println("Second saved state: " + originator.state)
+        assertThat(originator.state).isEqualTo("State #2")
+
+        originator.restore(careTaker.restore(0))
+        println("First saved state: " + originator.state)
+        assertThat(originator.state).isEqualTo("initial state")
+    }
 }
