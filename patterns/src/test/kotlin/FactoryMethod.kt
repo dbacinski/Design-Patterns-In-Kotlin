@@ -1,33 +1,37 @@
-interface Currency {
+import org.junit.jupiter.api.Test
+
+sealed class Country {
+    object USA : Country() //Kotlin 1.0 subclass could only be an inner class or object
+}
+
+object Spain : Country() //Kotlin 1.1 declared as top level class in the same file
+class Greece(val someProperty: String) : Country()
+data class Canada(val someProperty: String) : Country() //Kotlin 1.1 data class extends other class
+//object Poland : Country()
+
+class Currency(
     val code: String
-}
-
-class Euro(override val code: String = "EUR") : Currency
-class UnitedStatesDollar(override val code: String = "USD") : Currency
-
-enum class Country {
-    UnitedStates, Spain, UK, Greece
-}
+)
 
 class CurrencyFactory {
-    fun currencyForCountry(country: Country): Currency? {
-        return when (country) {
-            Country.Spain, Country.Greece -> Euro()
-            Country.UnitedStates          -> UnitedStatesDollar()
-            else                          -> null
-        }
-    }
+
+    fun currencyForCountry(country: Country): Currency =
+        when (country) {
+            is Greece -> Currency("EUR")
+            is Spain -> Currency("EUR")
+            is Country.USA -> Currency("USD")
+            is Canada -> Currency("CAD")
+        }  //try to add a new country Poland, it won't even compile without adding new branch to 'when'
 }
 
-fun main(args: Array<String>) {
-    val noCurrencyCode = "No Currency Code Available"
+class FactoryMethodTest {
 
-    val greeceCode = CurrencyFactory().currencyForCountry(Country.Greece)?.code ?: noCurrencyCode
-    println("Greece currency: $greeceCode")
+    @Test
+    fun `FactoryMethod`() {
+        val greeceCode = CurrencyFactory().currencyForCountry(Greece("")).code
+        println("Greece currency: $greeceCode")
 
-    val usCode = CurrencyFactory().currencyForCountry(Country.UnitedStates)?.code ?: noCurrencyCode
-    println("US currency: $usCode")
-
-    val ukCode = CurrencyFactory().currencyForCountry(Country.UK)?.code ?: noCurrencyCode
-    println("UK currency: $ukCode")
+        val usCode = CurrencyFactory().currencyForCountry(Country.USA).code
+        println("USA currency: $usCode")
+    }
 }
