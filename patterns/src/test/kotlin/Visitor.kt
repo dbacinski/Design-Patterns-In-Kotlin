@@ -1,3 +1,6 @@
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
 interface ReportVisitable {
     fun accept(visitor: ReportVisitor)
 }
@@ -48,19 +51,25 @@ class YearlyReportVisitor(var yearlyCost: Long = 0) : ReportVisitor {
     }
 }
 
-fun main(args: Array<String>) {
-    val projectAlpha = FixedPriceContract(costPerYear = 10000)
-    val projectBeta = SupportContract(costPerMonth = 500)
-    val projectGamma = TimeAndMaterialsContract(hours = 150, costPerHour = 10)
-    val projectKappa = TimeAndMaterialsContract(hours = 50, costPerHour = 50)
+class VisitorTest {
 
-    val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
+    @Test
+    fun `Visitor`() {
+        val projectAlpha = FixedPriceContract(costPerYear = 10000)
+        val projectBeta = SupportContract(costPerMonth = 500)
+        val projectGamma = TimeAndMaterialsContract(hours = 150, costPerHour = 10)
+        val projectKappa = TimeAndMaterialsContract(hours = 50, costPerHour = 50)
 
-    val monthlyCostReportVisitor = MonthlyCostReportVisitor()
-    projects.forEach { it.accept(monthlyCostReportVisitor) }
-    println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
+        val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
 
-    val yearlyReportVisitor = YearlyReportVisitor()
-    projects.forEach { it.accept(yearlyReportVisitor) }
-    println("Yearly cost: ${yearlyReportVisitor.yearlyCost}")
+        val monthlyCostReportVisitor = MonthlyCostReportVisitor()
+        projects.forEach { it.accept(monthlyCostReportVisitor) }
+        println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
+        assertThat(monthlyCostReportVisitor.monthlyCost).isEqualTo(5333)
+
+        val yearlyReportVisitor = YearlyReportVisitor()
+        projects.forEach { it.accept(yearlyReportVisitor) }
+        println("Yearly cost: ${yearlyReportVisitor.yearlyCost}")
+        assertThat(yearlyReportVisitor.yearlyCost).isEqualTo(20000)
+    }
 }
