@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test
+
 interface File {
     fun read(name: String)
 }
@@ -7,8 +9,7 @@ class NormalFile : File {
 }
 
 //Proxy:
-class SecuredFile : File {
-    val normalFile = NormalFile()
+class SecuredFile(private val normalFile: File) : File {
     var password: String = ""
 
     override fun read(name: String) {
@@ -21,10 +22,15 @@ class SecuredFile : File {
     }
 }
 
-fun main(args: Array<String>) {
-    val securedFile = SecuredFile()
-    securedFile.read("readme.md")
+class ProtectionProxyTest {
+    @Test
+    fun `Protection Proxy`() {
+        val securedFile = SecuredFile(NormalFile())
 
-    securedFile.password = "secret"
-    securedFile.read("readme.md")
+        with(securedFile) {
+            read("readme.md")
+            password = "secret"
+            read("readme.md")
+        }
+    }
 }
