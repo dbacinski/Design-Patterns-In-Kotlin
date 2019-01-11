@@ -1,19 +1,22 @@
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
 sealed class AuthorizationState
 
-class Unauthorized : AuthorizationState() // may be an object: object Unauthorized : AuthorizationState()
+object Unauthorized : AuthorizationState()
 
 class Authorized(val userName: String) : AuthorizationState()
 
 class AuthorizationPresenter {
 
-    private var state: AuthorizationState = Unauthorized()
+    private var state: AuthorizationState = Unauthorized
 
     fun loginUser(userLogin: String) {
         state = Authorized(userLogin)
     }
 
     fun logoutUser() {
-        state = Unauthorized()
+        state = Unauthorized
     }
 
     val isAuthorized: Boolean
@@ -23,19 +26,32 @@ class AuthorizationPresenter {
         }
 
     val userLogin: String
-        get() = when (state) {
-            is Authorized -> (state as Authorized).userName
-            is Unauthorized -> "Unknown"
+        get() {
+            val state = this.state //val enables smart casting of state
+            return when (state) {
+                is Authorized -> state.userName
+                is Unauthorized -> "Unknown"
+            }
         }
 
     override fun toString() = "User '$userLogin' is logged in: $isAuthorized"
 }
 
-fun main(args: Array<String>) {
-    val authorization = AuthorizationPresenter()
-    authorization.loginUser("admin")
-    println(authorization)
-    authorization.logoutUser()
-    println(authorization)
+class StateTest {
+
+    @Test
+    fun `State`() {
+        val authorizationPresenter = AuthorizationPresenter()
+
+        authorizationPresenter.loginUser("admin")
+        println(authorizationPresenter)
+        assertThat(authorizationPresenter.isAuthorized).isEqualTo(true)
+        assertThat(authorizationPresenter.userLogin).isEqualTo("admin")
+
+        authorizationPresenter.logoutUser()
+        println(authorizationPresenter)
+        assertThat(authorizationPresenter.isAuthorized).isEqualTo(false)
+        assertThat(authorizationPresenter.userLogin).isEqualTo("Unknown")
+    }
 }
 
