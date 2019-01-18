@@ -4,7 +4,7 @@
 
 Project maintained by [@dbacinski](http://twitter.com/dbacinski) (Dariusz Baciński)
 
-Based on [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-In-Swift) by [@nsmeme](http://twitter.com/nsmeme) (Oktawian Chojnacki)
+Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patterns-In-Swift) by [@nsmeme](http://twitter.com/nsmeme) (Oktawian Chojnacki)
 
 ## Table of Contents
 
@@ -46,19 +46,22 @@ Other objects subscribe to be immediately notified of any changes.
 
 ```kotlin
 interface TextChangedListener {
-    fun onTextChanged(newText: String)
+
+    fun onTextChanged(oldText: String, newText: String)
 }
 
 class PrintingTextChangedListener : TextChangedListener {
-    override fun onTextChanged(newText: String) = println("Text is changed to: $newText")
+
+    override fun onTextChanged(oldText: String, newText: String) =
+        println("Text is changed $oldText -> $newText")
 }
 
 class TextView {
 
     var listener: TextChangedListener? = null
 
-    var text: String by Delegates.observable("") { prop, old, new ->
-        listener?.onTextChanged(new)
+    var text: String by Delegates.observable("<empty>") { _, old, new ->
+        listener?.onTextChanged(old, new)
     }
 }
 ```
@@ -66,17 +69,21 @@ class TextView {
 #### Usage
 
 ```kotlin
-val textView = TextView()
-textView.listener = PrintingTextChangedListener()
-textView.text = "Lorem ipsum"
-textView.text = "dolor sit amet"
+        val textView = TextView().apply {
+            listener = PrintingTextChangedListener()
+        }
+
+        with(textView) {
+            text = "Lorem ipsum"
+            text = "dolor sit amet"
+        }
 ```
 
 #### Output
 
 ```
-Text is changed to: Lorem ipsum
-Text is changed to: dolor sit amet
+Text is changed <empty> -> Lorem ipsum
+Text is changed Lorem ipsum -> dolor sit amet
 ```
 
 [Strategy](/src/main/kotlin/Strategy.kt)
