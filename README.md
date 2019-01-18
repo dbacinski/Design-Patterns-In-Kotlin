@@ -370,6 +370,20 @@ class MonthlyCostReportVisitor(var monthlyCost: Long = 0) : ReportVisitor {
         monthlyCost += contract.costPerMonth
     }
 }
+
+class YearlyReportVisitor(var yearlyCost: Long = 0) : ReportVisitor {
+    override fun visit(contract: FixedPriceContract) {
+        yearlyCost += contract.costPerYear
+    }
+
+    override fun visit(contract: TimeAndMaterialsContract) {
+        yearlyCost += contract.costPerHour * contract.hours
+    }
+
+    override fun visit(contract: SupportContract) {
+        yearlyCost += contract.costPerMonth * 12
+    }
+}
 ```
 
 #### Usage
@@ -385,12 +399,17 @@ val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
 val monthlyCostReportVisitor = MonthlyCostReportVisitor()
 projects.forEach { it.accept(monthlyCostReportVisitor) }
 println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
+
+val yearlyReportVisitor = YearlyReportVisitor()
+projects.forEach { it.accept(yearlyReportVisitor) }
+println("Yearly cost: ${yearlyReportVisitor.yearlyCost}")
 ```
 
 #### Output
 
 ```
 Monthly cost: 5333
+Yearly cost: 20000
 ```
 
 [Mediator](/patterns/src/test/kotlin/Mediator.kt)
