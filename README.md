@@ -258,56 +258,73 @@ The chain of responsibility pattern is used to process varied requests, each of 
 #### Example
 
 ```kotlin
-interface MessageChain {
-    fun addLines(inputHeader: String): String
+interface HeadersChain {
+    fun addHeader(inputHeader: String): String
 }
 
-class AuthenticationHeader(val token: String?, var next: MessageChain? = null) : MessageChain {
+class AuthenticationHeader(val token: String?, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String {
+    override fun addHeader(inputHeader: String): String {
         token ?: throw IllegalStateException("Token should be not null")
-        return "$inputHeader Authorization: Bearer $token\n".let { next?.addLines(it) ?: it }
+        return inputHeader + "Authorization: Bearer $token\n"
+            .let { next?.addHeader(it) ?: it }
     }
 }
 
-class ContentTypeHeader(val contentType: String, var next: MessageChain? = null) : MessageChain {
+class ContentTypeHeader(val contentType: String, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String
-            = "$inputHeader ContentType: $contentType\n".let { next?.addLines(it) ?: it }
+    override fun addHeader(inputHeader: String): String =
+        inputHeader + "ContentType: $contentType\n"
+            .let { next?.addHeader(it) ?: it }
 }
 
-class BodyPayload(val body: String, var next: MessageChain? = null) : MessageChain {
+class BodyPayload(val body: String, var next: HeadersChain? = null) : HeadersChain {
 
-    override fun addLines(inputHeader: String): String
-            = "$inputHeader $body\n".let { next?.addLines(it) ?: it }
+    override fun addHeader(inputHeader: String): String =
+        inputHeader + "$body"
+            .let { next?.addHeader(it) ?: it }
 }
 ```
 
 #### Usage
 
 ```kotlin
+//create chain elements
 val authenticationHeader = AuthenticationHeader("123456")
 val contentTypeHeader = ContentTypeHeader("json")
-val messageBody = BodyPayload("{\"username\"=\"dbacinski\"}")
+val messageBody = BodyPayload("Body:\n{\n\"username\"=\"dbacinski\"\n}")
 
-val messageChainWithAuthorization = messageChainWithAuthorization(authenticationHeader, contentTypeHeader, messageBody)
-val messageWithAuthentication = messageChainWithAuthorization.addLines("Message with Authentication:\n")
+//construct chain
+authenticationHeader.next = contentTypeHeader
+contentTypeHeader.next = messageBody
+
+//execute chain
+val messageWithAuthentication =
+    authenticationHeader.addHeader("Headers with Authentication:\n")
 println(messageWithAuthentication)
 
-fun messageChainWithAuthorization(authenticationHeader: AuthenticationHeader, contentTypeHeader: ContentTypeHeader, messageBody: BodyPayload): MessageChain {
-    authenticationHeader.next = contentTypeHeader
-    contentTypeHeader.next = messageBody
-    return authenticationHeader
-}
+val messageWithoutAuth =
+    contentTypeHeader.addHeader("Headers:\n")
+println(messageWithoutAuth)
 ```
 
 #### Output
 
 ```
-Message with Authentication:
+Headers with Authentication:
 Authorization: Bearer 123456
 ContentType: json
-{"username"="dbacinski"}
+Body:
+{
+"username"="dbacinski"
+}
+
+Headers:
+ContentType: json
+Body:
+{
+"username"="dbacinski"
+}
 ```
 
 [Visitor](/patterns/src/test/kotlin/Visitor.kt)
