@@ -7,12 +7,13 @@ class Printer(private val stringFormatterStrategy: (String) -> String) {
     }
 }
 
+val lowerCaseFormatter: (String) -> String = { it.toLowerCase() }
+val upperCaseFormatter = { it: String -> it.toUpperCase() }
+
 class StrategyTest {
 
     @Test
     fun `Strategy`() {
-        val lowerCaseFormatter: (String) -> String = { it.toLowerCase() }
-        val upperCaseFormatter = { it: String -> it.toUpperCase() }
 
         val inputString = "LOREM ipsum DOLOR sit amet"
 

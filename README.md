@@ -94,26 +94,30 @@ The strategy pattern is used to create an interchangeable family of algorithms f
 #### Example
 
 ```kotlin
-class Printer(val stringFormatterStrategy: (String) -> String) {
-    fun printString(string: String) = println(stringFormatterStrategy.invoke(string))
+class Printer(private val stringFormatterStrategy: (String) -> String) {
+
+    fun printString(string: String) {
+        println(stringFormatterStrategy(string))
+    }
 }
 
 val lowerCaseFormatter: (String) -> String = { it.toLowerCase() }
-
 val upperCaseFormatter = { it: String -> it.toUpperCase() }
 ```
 
 #### Usage
 
 ```kotlin
-val lowerCasePrinter = Printer(lowerCaseFormatter)
-lowerCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+        val inputString = "LOREM ipsum DOLOR sit amet"
 
-val upperCasePrinter = Printer(upperCaseFormatter)
-upperCasePrinter.printString("LOREM ipsum DOLOR sit amet")
+        val lowerCasePrinter = Printer(lowerCaseFormatter)
+        lowerCasePrinter.printString(inputString)
 
-val prefixPrinter = Printer({ "Prefix: " + it })
-prefixPrinter.printString("LOREM ipsum DOLOR sit amet")
+        val upperCasePrinter = Printer(upperCaseFormatter)
+        upperCasePrinter.printString(inputString)
+
+        val prefixPrinter = Printer { "Prefix: $it" }
+        prefixPrinter.printString(inputString)
 ```
 
 #### Output
