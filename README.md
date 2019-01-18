@@ -69,14 +69,14 @@ class TextView {
 #### Usage
 
 ```kotlin
-        val textView = TextView().apply {
-            listener = PrintingTextChangedListener()
-        }
+val textView = TextView().apply {
+    listener = PrintingTextChangedListener()
+}
 
-        with(textView) {
-            text = "Lorem ipsum"
-            text = "dolor sit amet"
-        }
+with(textView) {
+    text = "Lorem ipsum"
+    text = "dolor sit amet"
+}
 ```
 
 #### Output
@@ -108,16 +108,16 @@ val upperCaseFormatter = { it: String -> it.toUpperCase() }
 #### Usage
 
 ```kotlin
-        val inputString = "LOREM ipsum DOLOR sit amet"
+val inputString = "LOREM ipsum DOLOR sit amet"
 
-        val lowerCasePrinter = Printer(lowerCaseFormatter)
-        lowerCasePrinter.printString(inputString)
+val lowerCasePrinter = Printer(lowerCaseFormatter)
+lowerCasePrinter.printString(inputString)
 
-        val upperCasePrinter = Printer(upperCaseFormatter)
-        upperCasePrinter.printString(inputString)
+val upperCasePrinter = Printer(upperCaseFormatter)
+upperCasePrinter.printString(inputString)
 
-        val prefixPrinter = Printer { "Prefix: $it" }
-        prefixPrinter.printString(inputString)
+val prefixPrinter = Printer { "Prefix: $it" }
+prefixPrinter.printString(inputString)
 ```
 
 #### Output
@@ -168,12 +168,12 @@ class CommandProcessor {
 #### Usage
 
 ```kotlin
-        CommandProcessor()
-            .addToQueue(OrderAddCommand(1L))
-            .addToQueue(OrderAddCommand(2L))
-            .addToQueue(OrderPayCommand(2L))
-            .addToQueue(OrderPayCommand(1L))
-            .processCommands()
+CommandProcessor()
+    .addToQueue(OrderAddCommand(1L))
+    .addToQueue(OrderAddCommand(2L))
+    .addToQueue(OrderPayCommand(2L))
+    .addToQueue(OrderPayCommand(1L))
+    .processCommands()
 ```
 
 #### Output
@@ -234,13 +234,13 @@ class AuthorizationPresenter {
 #### Usage
 
 ```kotlin
-        val authorizationPresenter = AuthorizationPresenter()
+val authorizationPresenter = AuthorizationPresenter()
 
-        authorizationPresenter.loginUser("admin")
-        println(authorizationPresenter)
+authorizationPresenter.loginUser("admin")
+println(authorizationPresenter)
 
-        authorizationPresenter.logoutUser()
-        println(authorizationPresenter)
+authorizationPresenter.logoutUser()
+println(authorizationPresenter)
 ```
 
 #### Output
