@@ -141,45 +141,48 @@ interface OrderCommand {
 }
 
 class OrderAddCommand(val id: Long) : OrderCommand {
-    override fun execute() = println("adding order with id: $id")
+    override fun execute() = println("Adding order with id: $id")
 }
 
 class OrderPayCommand(val id: Long) : OrderCommand {
-    override fun execute() = println("paying for order with id: $id")
+    override fun execute() = println("Paying for order with id: $id")
 }
 
 class CommandProcessor {
 
     private val queue = ArrayList<OrderCommand>()
 
-    fun addToQueue(orderCommand: OrderCommand): CommandProcessor
-            = apply { queue.add(orderCommand) }
+    fun addToQueue(orderCommand: OrderCommand): CommandProcessor =
+        apply {
+            queue.add(orderCommand)
+        }
 
-    fun processCommands(): CommandProcessor = apply {
-        queue.forEach { it.execute() }
-        queue.clear()
-    }
+    fun processCommands(): CommandProcessor =
+        apply {
+            queue.forEach { it.execute() }
+            queue.clear()
+        }
 }
 ```
 
 #### Usage
 
 ```kotlin
-CommandProcessor()
-    .addToQueue(OrderAddCommand(1L))
-    .addToQueue(OrderAddCommand(2L))
-    .addToQueue(OrderPayCommand(2L))
-    .addToQueue(OrderPayCommand(1L))
-    .processCommands()
+        CommandProcessor()
+            .addToQueue(OrderAddCommand(1L))
+            .addToQueue(OrderAddCommand(2L))
+            .addToQueue(OrderPayCommand(2L))
+            .addToQueue(OrderPayCommand(1L))
+            .processCommands()
 ```
 
 #### Output
 
 ```
-adding order with id: 1
-adding order with id: 2
-paying for order with id: 2
-paying for order with id: 1
+Adding order with id: 1
+Adding order with id: 2
+Paying for order with id: 2
+Paying for order with id: 1
 ```
 
 [State](/src/main/kotlin/State.kt)
