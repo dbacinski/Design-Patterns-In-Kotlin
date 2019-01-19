@@ -419,57 +419,54 @@ Mediator design pattern is used to provide a centralized communication medium be
 #### Example
 
 ```kotlin
-class ChatUser(val mediator: ChatMediator, val name: String){
+class ChatUser(private val mediator: ChatMediator, val name: String) {
     fun send(msg: String) {
-        println("${name}: Sending Message= ${msg}")
+        println("$name: Sending Message= $msg")
         mediator.sendMessage(msg, this)
     }
 
     fun receive(msg: String) {
-        println("${name}: Message received: ${msg}")
+        println("$name: Message received: $msg")
     }
 }
 
 class ChatMediator {
+
     private val users: MutableList<ChatUser> = ArrayList()
 
     fun sendMessage(msg: String, user: ChatUser) {
-        users.forEach {
-            if (it !== user) {
+        users
+            .filter { it != user }
+            .forEach {
                 it.receive(msg)
-	    }
-        }
+            }
     }
 
-    fun addUser(user: ChatUser) {
-        users.add(user)
-    }
+    fun addUser(user: ChatUser): ChatMediator =
+        apply { users.add(user) }
+
 }
 ```
 
 #### Usage
 
 ```kotlin
-  val mediator = ChatMediator()
-  val john = ChatUser(mediator, "John")
+val mediator = ChatMediator()
+val john = ChatUser(mediator, "John")
 
-  with(mediator) {
-      addUser(ChatUser(this, "User1"))
-      addUser(ChatUser(this, "User2"))
-      addUser(ChatUser(this, "User3"))
-      addUser(john)
-  }
-
-  john.send("Hi everyone!")
+mediator
+    .addUser(ChatUser(mediator, "Alice"))
+    .addUser(ChatUser(mediator, "Bob"))
+    .addUser(john)
+john.send("Hi everyone!")
 ```
 
 #### Output
 
 ```
 John: Sending Message= Hi everyone!
-User1: Message received: Hi everyone!
-User2: Message received: Hi everyone!
-User3: Message received: Hi everyone!
+Alice: Message received: Hi everyone!
+Bob: Message received: Hi everyone!
 ```
 
 [Memento](/patterns/src/test/kotlin/Memento.kt)
