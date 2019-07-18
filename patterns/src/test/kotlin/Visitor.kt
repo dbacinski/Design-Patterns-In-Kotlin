@@ -2,53 +2,48 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 interface ReportVisitable {
-    fun accept(visitor: ReportVisitor)
+    fun <R> accept(visitor: ReportVisitor<R>): R
 }
 
 class FixedPriceContract(val costPerYear: Long) : ReportVisitable {
-    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
+    override fun <R> accept(visitor: ReportVisitor<R>): R = visitor.visit(this)
+
 }
 
 class TimeAndMaterialsContract(val costPerHour: Long, val hours: Long) : ReportVisitable {
-    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
+    override fun <R> accept(visitor: ReportVisitor<R>): R = visitor.visit(this)
 }
 
 class SupportContract(val costPerMonth: Long) : ReportVisitable {
-    override fun accept(visitor: ReportVisitor) = visitor.visit(this)
+    override fun <R> accept(visitor: ReportVisitor<R>): R = visitor.visit(this)
 }
 
-interface ReportVisitor {
-    fun visit(contract: FixedPriceContract)
-    fun visit(contract: TimeAndMaterialsContract)
-    fun visit(contract: SupportContract)
+interface ReportVisitor<out R> {
+
+    fun visit(contract: FixedPriceContract): R
+    fun visit(contract: TimeAndMaterialsContract): R
+    fun visit(contract: SupportContract): R
+
 }
 
-class MonthlyCostReportVisitor(var monthlyCost: Long = 0) : ReportVisitor {
-    override fun visit(contract: FixedPriceContract) {
-        monthlyCost += contract.costPerYear / 12
-    }
+class MonthlyCostReportVisitor : ReportVisitor<Long> {
 
-    override fun visit(contract: TimeAndMaterialsContract) {
-        monthlyCost += contract.costPerHour * contract.hours
-    }
+    override fun visit(contract: FixedPriceContract): Long = contract.costPerYear / 12
 
-    override fun visit(contract: SupportContract) {
-        monthlyCost += contract.costPerMonth
-    }
+    override fun visit(contract: TimeAndMaterialsContract): Long = contract.costPerHour * contract.hours
+
+    override fun visit(contract: SupportContract): Long = contract.costPerMonth
+
 }
 
-class YearlyReportVisitor(var yearlyCost: Long = 0) : ReportVisitor {
-    override fun visit(contract: FixedPriceContract) {
-        yearlyCost += contract.costPerYear
-    }
+class YearlyReportVisitor : ReportVisitor<Long> {
 
-    override fun visit(contract: TimeAndMaterialsContract) {
-        yearlyCost += contract.costPerHour * contract.hours
-    }
+    override fun visit(contract: FixedPriceContract): Long = contract.costPerYear
 
-    override fun visit(contract: SupportContract) {
-        yearlyCost += contract.costPerMonth * 12
-    }
+    override fun visit(contract: TimeAndMaterialsContract): Long = contract.costPerHour * contract.hours
+
+    override fun visit(contract: SupportContract): Long = contract.costPerMonth * 12
+
 }
 
 class VisitorTest {
@@ -63,13 +58,16 @@ class VisitorTest {
         val projects = arrayOf(projectAlpha, projectBeta, projectGamma, projectKappa)
 
         val monthlyCostReportVisitor = MonthlyCostReportVisitor()
-        projects.forEach { it.accept(monthlyCostReportVisitor) }
-        println("Monthly cost: ${monthlyCostReportVisitor.monthlyCost}")
-        assertThat(monthlyCostReportVisitor.monthlyCost).isEqualTo(5333)
+
+        val monthlyCost = projects.map { it.accept(monthlyCostReportVisitor) }
+                .sum()
+        println("Monthly cost: ${monthlyCost}")
+        assertThat(monthlyCost).isEqualTo(5333)
 
         val yearlyReportVisitor = YearlyReportVisitor()
-        projects.forEach { it.accept(yearlyReportVisitor) }
-        println("Yearly cost: ${yearlyReportVisitor.yearlyCost}")
-        assertThat(yearlyReportVisitor.yearlyCost).isEqualTo(20000)
+        val yearlyCost = projects.map { it.accept(yearlyReportVisitor) }
+                .sum()
+        println("Yearly cost: ${yearlyCost}")
+        assertThat(yearlyCost).isEqualTo(20000)
     }
 }
