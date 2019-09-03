@@ -11,21 +11,13 @@ class AuthorizationPresenter {
 
     private var state: AuthorizationState = Unauthorized
 
-    fun loginUser(userLogin: String) {
-        state = Authorized(userLogin)
-    }
-
-    fun logoutUser() {
-        state = Unauthorized
-    }
-
     val isAuthorized: Boolean
         get() = when (state) {
             is Authorized -> true
             is Unauthorized -> false
         }
 
-    val userLogin: String
+    val userName: String
         get() {
             val state = this.state //val enables smart casting of state
             return when (state) {
@@ -34,7 +26,15 @@ class AuthorizationPresenter {
             }
         }
 
-    override fun toString() = "User '$userLogin' is logged in: $isAuthorized"
+    fun loginUser(userName: String) {
+        state = Authorized(userName)
+    }
+
+    fun logoutUser() {
+        state = Unauthorized
+    }
+
+    override fun toString() = "User '$userName' is logged in: $isAuthorized"
 }
 
 class StateTest {
@@ -46,12 +46,12 @@ class StateTest {
         authorizationPresenter.loginUser("admin")
         println(authorizationPresenter)
         assertThat(authorizationPresenter.isAuthorized).isEqualTo(true)
-        assertThat(authorizationPresenter.userLogin).isEqualTo("admin")
+        assertThat(authorizationPresenter.userName).isEqualTo("admin")
 
         authorizationPresenter.logoutUser()
         println(authorizationPresenter)
         assertThat(authorizationPresenter.isAuthorized).isEqualTo(false)
-        assertThat(authorizationPresenter.userLogin).isEqualTo("Unknown")
+        assertThat(authorizationPresenter.userName).isEqualTo("Unknown")
     }
 }
 
