@@ -1031,7 +1031,7 @@ Reading file: readme.md
 [Composite](/patterns/src/test/kotlin/Composite.kt)
 ------------------
 
-The composite pattern is used to composes zero-or-more similar 
+The composite pattern is used to compose zero-or-more similar 
 objects so that they can be manipulated as one object.
 
 #### Example
