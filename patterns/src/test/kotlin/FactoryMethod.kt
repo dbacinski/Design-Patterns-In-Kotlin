@@ -14,7 +14,7 @@ class Currency(
     val code: String
 )
 
-class CurrencyFactory {
+object CurrencyFactory {
 
     fun currencyForCountry(country: Country): Currency =
         when (country) {
@@ -29,10 +29,10 @@ class FactoryMethodTest {
 
     @Test
     fun `FactoryMethod`() {
-        val greeceCurrency = CurrencyFactory().currencyForCountry(Greece("")).code
+        val greeceCurrency = CurrencyFactory.currencyForCountry(Greece("")).code
         println("Greece currency: $greeceCurrency")
 
-        val usaCurrency = CurrencyFactory().currencyForCountry(Country.USA).code
+        val usaCurrency = CurrencyFactory.currencyForCountry(Country.USA).code
         println("USA currency: $usaCurrency")
 
         assertThat(greeceCurrency).isEqualTo("EUR")
