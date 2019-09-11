@@ -28,7 +28,7 @@ Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patter
 	* [Facade](#facade)
 	* [Protection Proxy](#protection-proxy)
 	* [Composite](#composite)
-	* [FlyWeight] (#flyweight)
+	* [FlyWeight](#flyweight)
 
 Behavioral
 ==========
