@@ -9,16 +9,19 @@ interface TextChangedListener {
 
 class PrintingTextChangedListener : TextChangedListener {
 
-    override fun onTextChanged(oldText: String, newText: String) =
-        println("Text is changed $oldText -> $newText")
+    var text = ""
+
+    override fun onTextChanged(oldText: String, newText: String) {
+        text = "Text is changed: $oldText -> $newText"
+    }
 }
 
 class TextView {
 
-    var listener: TextChangedListener? = null
+    val listeners = mutableListOf<TextChangedListener>()
 
     var text: String by Delegates.observable("<empty>") { _, old, new ->
-        listener?.onTextChanged(old, new)
+        listeners.forEach { it.onTextChanged(old, new) }
     }
 }
 
@@ -26,8 +29,10 @@ class ListenerTest {
 
     @Test
     fun `Listener`() {
+        val listener = PrintingTextChangedListener()
+
         val textView = TextView().apply {
-            listener = PrintingTextChangedListener()
+            listeners.add(listener)
         }
 
         with(textView) {
@@ -35,7 +40,7 @@ class ListenerTest {
             text = "dolor sit amet"
         }
 
-        assertThat(textView.listener).isNotNull()
+        assertThat(listener.text).isEqualTo("Text is changed: Lorem ipsum -> dolor sit amet")
     }
 }
 
