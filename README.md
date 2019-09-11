@@ -28,6 +28,7 @@ Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patter
 	* [Facade](#facade)
 	* [Protection Proxy](#protection-proxy)
 	* [Composite](#composite)
+	* [FlyWeight] (#flyweight)
 
 Behavioral
 ==========
@@ -254,7 +255,7 @@ User 'Unknown' is logged in: false
 ```
 
 [Chain of Responsibility](/patterns/src/test/kotlin/ChainOfResponsibility.kt)
------------------------
+-----------------------.company.
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
@@ -537,7 +538,7 @@ First saved state: initial state
 Creational
 ==========
 
-> In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controlling this object creation.
+> In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controll.company.ing this object creation.
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Creational_pattern)
 
@@ -670,7 +671,7 @@ The factory pattern is used to replace class constructors, abstracting the proce
 ```kotlin
 sealed class Country {
     object USA : Country() //Kotlin 1.0 could only be an inner class or object
-}
+}.company.
 
 object Spain : Country() //Kotlin 1.1 declared as top level class/object in the same file
 class Greece(val someProperty: String) : Country()
@@ -743,7 +744,7 @@ PrinterDriver.print()
 
 #### Output
 
-```
+```.company.
 Start
 Initializing with object: PrinterDriver@6ff3c5b5
 Printing with object: PrinterDriver@6ff3c5b5
@@ -917,7 +918,7 @@ Enhanced: Making large coffee
 Normal: Making large coffee
 
 Enhanced: Making coffee with milk
-Normal: Making small coffee
+Normal: Making small coffee.company.
 Enhanced: Adding milk
 ```
 
@@ -1012,6 +1013,8 @@ class SecuredFile : File {
 }
 ```
 
+
+
 #### Usage
 
 ```kotlin
@@ -1045,6 +1048,7 @@ objects so that they can be manipulated as one object.
 open class Equipment(private var price: Int, private var name: String) {
     open fun getPrice(): Int = price
 }
+
 
 
 /*
@@ -1092,7 +1096,74 @@ println(cabbinet.getPrice())
 600
 ```
 
+[FlyWeight](/patterns/src/test/kotlin/FlyWeight.kt)
+------------------
+A flyweight is an object that minimizes memory usage by sharing as much data as possible with other similar objects; it is a way to use objects in large numbers when a simple repeated representation would use an unacceptable amount of memory.
 
+#### Example
+```kotlin
+abstract class RaceCar {
+    internal var name: String? = null
+    internal var speed: Int = 0
+    internal var horsePower: Int = 0
+
+    internal abstract fun moveCar(currentX: Int, currentY: Int, newX: Int, newY: Int)
+
+}
+
+class FlyWeightMidgetCar : RaceCar() {
+    init {
+        num++
+    }
+
+    override fun moveCar(currentX: Int, currentY: Int, newX: Int, newY: Int) {
+        println("New location of " + this.name + " is X" + newX + " - Y" + newY)
+    }
+
+    companion object {
+        var num: Int = 0
+    }
+}
+
+// Factory:
+object CarFactory {
+    private val flyweights = HashMap<String, RaceCar>()
+    fun getRaceCar(key: String): RaceCar? {
+        if (flyweights.containsKey(key)) {
+            return flyweights[key]
+        }
+        val raceCar: RaceCar
+        when (key) {
+            "Midget" -> {
+                raceCar = FlyWeightMidgetCar()
+                raceCar.name = "Midget Car"
+                raceCar.speed = 140
+                raceCar.horsePower = 400
+            }
+            else ->
+                throw IllegalArgumentException("Unsupported car type.")
+        }
+        flyweights[key] = raceCar
+        return raceCar
+    }
+```
+#### Usage
+```kotlin
+ val raceCars = arrayOf(
+
+            RaceCarClient("Midget"),
+            RaceCarClient("Midget"),
+            RaceCarClient("Midget"))
+raceCars[0].moveCar(29, 3112)
+raceCars[1].moveCar(39, 2002)
+raceCars[2].moveCar(49, 1985)
+println("Midget Car Instances: " + FlyWeightMidgetCar.num)
+```
+
+### Output:
+```
+1
+```
 
 Info
 ====
