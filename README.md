@@ -255,7 +255,7 @@ User 'Unknown' is logged in: false
 ```
 
 [Chain of Responsibility](/patterns/src/test/kotlin/ChainOfResponsibility.kt)
------------------------.company.
+-----------------------
 
 The chain of responsibility pattern is used to process varied requests, each of which may be dealt with by a different handler.
 
@@ -538,7 +538,7 @@ First saved state: initial state
 Creational
 ==========
 
-> In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controll.company.ing this object creation.
+> In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controlling this object creation.
 >
 >**Source:** [wikipedia.org](http://en.wikipedia.org/wiki/Creational_pattern)
 
@@ -671,7 +671,7 @@ The factory pattern is used to replace class constructors, abstracting the proce
 ```kotlin
 sealed class Country {
     object USA : Country() //Kotlin 1.0 could only be an inner class or object
-}.company.
+}
 
 object Spain : Country() //Kotlin 1.1 declared as top level class/object in the same file
 class Greece(val someProperty: String) : Country()
@@ -744,7 +744,7 @@ PrinterDriver.print()
 
 #### Output
 
-```.company.
+```
 Start
 Initializing with object: PrinterDriver@6ff3c5b5
 Printing with object: PrinterDriver@6ff3c5b5
@@ -918,7 +918,7 @@ Enhanced: Making large coffee
 Normal: Making large coffee
 
 Enhanced: Making coffee with milk
-Normal: Making small coffee.company.
+Normal: Making small coffee
 Enhanced: Adding milk
 ```
 
