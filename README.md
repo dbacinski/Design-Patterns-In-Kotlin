@@ -1108,7 +1108,6 @@ abstract class RaceCar {
     internal var horsePower: Int = 0
 
     internal abstract fun moveCar(currentX: Int, currentY: Int, newX: Int, newY: Int)
-
 }
 
 class FlyWeightMidgetCar : RaceCar() {
@@ -1146,6 +1145,18 @@ object CarFactory {
         flyweights[key] = raceCar
         return raceCar
     }
+}
+
+class RaceCarClient(name: String) {
+    private val raceCar: RaceCar = CarFactory.getRaceCar(name)!!
+    private var currentX = 0
+    private var currentY = 0
+    fun moveCar(newX: Int, newY: Int) {
+        raceCar.moveCar(currentX, currentY, newX, newY)
+        currentX = newX
+        currentY = newY
+    }
+}
 ```
 #### Usage
 ```kotlin
@@ -1162,7 +1173,10 @@ println("Midget Car Instances: " + FlyWeightMidgetCar.num)
 
 ### Output:
 ```
-1
+New location of Midget Car is X29 - Y3112
+New location of Midget Car is X39 - Y2002
+New location of Midget Car is X49 - Y1985
+Midget Car Instances: 1
 ```
 
 Info
