@@ -921,6 +921,64 @@ Normal: Making small coffee
 Enhanced: Adding milk
 ```
 
+#### Alternative
+```
+interface Flyable {
+    fun fly()
+}
+
+interface Swimable {
+    fun swim()
+}
+
+interface Crawable {
+    fun crawl()
+}
+
+class FlyWithWings : Flyable {
+    override fun fly() {
+        println("flying with wings")
+    }
+}
+
+class FlyWithMotor : Flyable {
+    override fun fly() {
+        println("flying with motor")
+    }
+}
+
+class SwimLikeFish : Swimable {
+    override fun swim() {
+        println("swimming like a fish")
+    }
+}
+
+class FlyingFish : Swimable by SwimLikeFish(), Flyable by FlyWithWings()
+class SwimmingSnake(val crawable: Crawable) : Swimable by SwimLikeFish(), Crawable by crawable
+```
+
+#### Alternative Usage
+```
+val flyingFish = FlyingFish()
+flyingFish.fly()
+flyingFish.swim()
+
+val swimmingSnake = SwimmingSnake(object : Crawable {
+    override fun crawl() {
+        println("crawling like a snake king")
+    }
+})
+
+swimmingSnake.crawl()
+```
+
+#### Alternative Output
+```
+flying with wings
+swimming like a fish
+crawling like a snake king
+```
+
 [Facade](/patterns/src/test/kotlin/Facade.kt)
 ---------
 
