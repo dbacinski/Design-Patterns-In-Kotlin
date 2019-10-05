@@ -11,7 +11,7 @@ open class Composite(name: String) : Equipment(0, name) {
     private val equipments = ArrayList<Equipment>()
 
     override val price: Int
-        get() = equipments.map { it -> it.price }.sum()
+        get() = equipments.map { it.price }.sum()
 
 
     fun add(equipment: Equipment) =
@@ -27,7 +27,7 @@ class Memory : Equipment(280, "Memory")
 class CompositeTest {
 
     @Test
-    fun `Composite`() {
+    fun Composite() {
         val pc = PersonalComputer()
             .add(Processor())
             .add(HardDrive())

@@ -13,7 +13,7 @@ val upperCaseFormatter = { it: String -> it.toUpperCase() }
 class StrategyTest {
 
     @Test
-    fun `Strategy`() {
+    fun Strategy() {
 
         val inputString = "LOREM ipsum DOLOR sit amet"
 

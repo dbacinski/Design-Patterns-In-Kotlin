@@ -28,7 +28,7 @@ class TextView {
 class ListenerTest {
 
     @Test
-    fun `Listener`() {
+    fun Listener() {
         val listener = PrintingTextChangedListener()
 
         val textView = TextView().apply {

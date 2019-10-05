@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Test
 
-class ChatUser(private val mediator: ChatMediator, val name: String) {
+class ChatUser(private val mediator: ChatMediator, private val name: String) {
     fun send(msg: String) {
         println("$name: Sending Message= $msg")
         mediator.sendMessage(msg, this)
@@ -31,7 +31,7 @@ class ChatMediator {
 class MediatorTest {
 
     @Test
-    fun `Mediator`() {
+    fun Mediator() {
         val mediator = ChatMediator()
 
         val john = ChatUser(mediator, "John")

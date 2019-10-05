@@ -29,7 +29,7 @@ class CareTaker {
 class MementoTest {
 
     @Test
-    fun `Memento`() {
+    fun Memento() {
         val originator = Originator("initial state")
         val careTaker = CareTaker()
         careTaker.saveState(originator.createMemento())

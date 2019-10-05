@@ -19,8 +19,7 @@ class AuthorizationPresenter {
 
     val userName: String
         get() {
-            val state = this.state //val enables smart casting of state
-            return when (state) {
+            return when (val state = this.state) { //val enables smart casting of state
                 is Authorized -> state.userName
                 is Unauthorized -> "Unknown"
             }
@@ -40,7 +39,7 @@ class AuthorizationPresenter {
 class StateTest {
 
     @Test
-    fun `State`() {
+    fun State() {
         val authorizationPresenter = AuthorizationPresenter()
 
         authorizationPresenter.loginUser("admin")

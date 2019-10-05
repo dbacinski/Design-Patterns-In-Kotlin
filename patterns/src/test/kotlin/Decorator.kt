@@ -12,7 +12,7 @@ class NormalCoffeeMachine : CoffeeMachine {
 }
 
 //Decorator:
-class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by coffeeMachine {
+class EnhancedCoffeeMachine(private val coffeeMachine: CoffeeMachine) : CoffeeMachine by coffeeMachine {
 
     // overriding behaviour
     override fun makeLargeCoffee() {
@@ -34,7 +34,7 @@ class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by
 class DecoratorTest {
 
     @Test
-    fun `Decorator`() {
+    fun Decorator() {
         val normalMachine = NormalCoffeeMachine()
         val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
 

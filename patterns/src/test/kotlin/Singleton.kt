@@ -13,7 +13,7 @@ object PrinterDriver {
 class SingletonTest {
 
     @Test
-    fun `Singleton`() {
+    fun Singleton() {
         println("Start")
         val printerFirst = PrinterDriver.print()
         val printerSecond = PrinterDriver.print()
