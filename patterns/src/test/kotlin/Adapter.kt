@@ -29,7 +29,7 @@ class FahrenheitTemperature(private var celsiusTemperature: CelsiusTemperature) 
 class AdapterTest {
 
     @Test
-    fun `Adapter`() {
+    fun Adapter() {
         val celsiusTemperature = CelsiusTemperature(0.0)
         val fahrenheitTemperature = FahrenheitTemperature(celsiusTemperature)
 

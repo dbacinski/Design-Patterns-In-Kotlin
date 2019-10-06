@@ -28,7 +28,7 @@ object CurrencyFactory {
 class FactoryMethodTest {
 
     @Test
-    fun `FactoryMethod`() {
+    fun FactoryMethod() {
         val greeceCurrency = CurrencyFactory.currencyForCountry(Greece("")).code
         println("Greece currency: $greeceCurrency")
 

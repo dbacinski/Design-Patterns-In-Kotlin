@@ -37,7 +37,7 @@ class UserRepository {
 class FacadeTest {
 
     @Test
-    fun `Facade`() {
+    fun Facade() {
         val userRepository = UserRepository()
         val user = User("dbacinski")
         userRepository.save(user)

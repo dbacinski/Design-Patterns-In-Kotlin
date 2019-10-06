@@ -72,7 +72,7 @@ fun dialog(init: DialogBuilder.() -> Unit): Dialog =
 class BuilderTest {
 
     @Test
-    fun `Builder`() {
+    fun Builder() {
 
         println("Build dialog")
 

@@ -51,7 +51,7 @@ class YearlyReportVisitor : ReportVisitor<Long> {
 class VisitorTest {
 
     @Test
-    fun `Visitor`() {
+    fun Visitor() {
         val projectAlpha = FixedPriceContract(costPerYear = 10000)
         val projectBeta = SupportContract(costPerMonth = 500)
         val projectGamma = TimeAndMaterialsContract(hours = 150, costPerHour = 10)
