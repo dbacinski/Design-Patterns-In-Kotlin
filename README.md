@@ -28,6 +28,7 @@ Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patter
 	* [Facade](#facade)
 	* [Protection Proxy](#protection-proxy)
 	* [Composite](#composite)
+	* [FlyWeight](#flyweight)
 
 Behavioral
 ==========
@@ -1012,6 +1013,8 @@ class SecuredFile : File {
 }
 ```
 
+
+
 #### Usage
 
 ```kotlin
@@ -1045,6 +1048,7 @@ objects so that they can be manipulated as one object.
 open class Equipment(private var price: Int, private var name: String) {
     open fun getPrice(): Int = price
 }
+
 
 
 /*
@@ -1092,7 +1096,88 @@ println(cabbinet.getPrice())
 600
 ```
 
+[FlyWeight](/patterns/src/test/kotlin/FlyWeight.kt)
+------------------
+A flyweight is an object that minimizes memory usage by sharing as much data as possible with other similar objects; it is a way to use objects in large numbers when a simple repeated representation would use an unacceptable amount of memory.
 
+#### Example
+```kotlin
+abstract class RaceCar {
+    internal var name: String? = null
+    internal var speed: Int = 0
+    internal var horsePower: Int = 0
+
+    internal abstract fun moveCar(currentX: Int, currentY: Int, newX: Int, newY: Int)
+}
+
+class FlyWeightMidgetCar : RaceCar() {
+    init {
+        num++
+    }
+
+    override fun moveCar(currentX: Int, currentY: Int, newX: Int, newY: Int) {
+        println("New location of " + this.name + " is X" + newX + " - Y" + newY)
+    }
+
+    companion object {
+        var num: Int = 0
+    }
+}
+
+// Factory:
+object CarFactory {
+    private val flyweights = HashMap<String, RaceCar>()
+    fun getRaceCar(key: String): RaceCar? {
+        if (flyweights.containsKey(key)) {
+            return flyweights[key]
+        }
+        val raceCar: RaceCar
+        when (key) {
+            "Midget" -> {
+                raceCar = FlyWeightMidgetCar()
+                raceCar.name = "Midget Car"
+                raceCar.speed = 140
+                raceCar.horsePower = 400
+            }
+            else ->
+                throw IllegalArgumentException("Unsupported car type.")
+        }
+        flyweights[key] = raceCar
+        return raceCar
+    }
+}
+
+class RaceCarClient(name: String) {
+    private val raceCar: RaceCar = CarFactory.getRaceCar(name)!!
+    private var currentX = 0
+    private var currentY = 0
+    fun moveCar(newX: Int, newY: Int) {
+        raceCar.moveCar(currentX, currentY, newX, newY)
+        currentX = newX
+        currentY = newY
+    }
+}
+```
+#### Usage
+```kotlin
+ val raceCars = arrayOf(
+
+            RaceCarClient("Midget"),
+            RaceCarClient("Midget"),
+            RaceCarClient("Midget"))
+raceCars[0].moveCar(29, 3112)
+raceCars[1].moveCar(39, 2002)
+raceCars[2].moveCar(49, 1985)
+println("Midget Car Instances: " + FlyWeightMidgetCar.num)
+```
+
+### Output:
+```
+New location of Midget Car is X29 - Y3112
+New location of Midget Car is X39 - Y2002
+New location of Midget Car is X49 - Y1985
+Midget Car Instances: 1
+```
 
 Info
 ====
