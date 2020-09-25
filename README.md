@@ -21,6 +21,7 @@ Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patter
 	* [Builder / Assembler](#builder--assembler)
 	* [Factory Method](#factory-method)
 	* [Singleton](#singleton)
+	* [Prototype](#prototype)
 	* [Abstract Factory](#abstract-factory)
 * [Structural Patterns](#structural)
 	* [Adapter](#adapter)
@@ -748,6 +749,53 @@ Start
 Initializing with object: PrinterDriver@6ff3c5b5
 Printing with object: PrinterDriver@6ff3c5b5
 Printing with object: PrinterDriver@6ff3c5b5
+```
+
+[Prototype](/patterns/src/test/kotlin/Prototype.kt)
+------------
+
+The prototype is used to copy existing objects without making your code dependent on their classes.
+
+#### Example:
+
+```kotlin
+data class Personal(
+        val name: String,
+        val age: Int,
+        val country: String,
+        val gender: Gender
+)
+
+enum class Gender {
+    FEMALE, MALE, OTHER
+}
+
+fun Any.getObjectSignature(): String = "${this.javaClass.name}@${Integer.toHexString(System.identityHashCode(this))}"
+```
+
+#### Usage
+
+```kotlin
+val personal = Personal(
+        name = "Emanuel",
+        age = 20,
+        country = "Brazil",
+        gender = Gender.MALE
+)
+val personalClone = personal.copy()
+
+println("personal printing with values $personal and with object ${personal.getObjectSignature()}")
+println("personalClone printing with values $personalClone and with object ${personalClone.getObjectSignature()}")
+
+assertThat(personal).isNotSameAs(personalClone)
+assertThat(personal).isEqualTo(personalClone)
+```
+
+#### Output
+
+```
+personal printing with values Personal(name=Emanuel, age=20, country=Brazil, gender=MALE) and with object Personal@47f1ea23
+personalClone printing with values Personal(name=Emanuel, age=20, country=Brazil, gender=MALE) and with object Personal@18682904
 ```
 
 [Abstract Factory](/patterns/src/test/kotlin/AbstractFactory.kt)
