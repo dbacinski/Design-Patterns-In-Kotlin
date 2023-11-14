@@ -73,7 +73,7 @@ class TextView {
 
 ```kotlin
 val textView = TextView().apply {
-    listener = PrintingTextChangedListener()
+    listeners.add(PrintingTextChangedListener())
 }
 
 with(textView) {
