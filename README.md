@@ -632,8 +632,8 @@ fun dialog(init: DialogBuilder.() -> Unit): Dialog {
 }
 
 val dialog: Dialog = dialog {
-	title {
-    	text = "Dialog Title"
+    title {
+        text = "Dialog Title"
     }
     message {
         text = "Dialog Message"
