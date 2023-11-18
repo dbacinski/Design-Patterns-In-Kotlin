@@ -20,6 +20,7 @@ Inspired by [Design-Patterns-In-Swift](https://github.com/ochococo/Design-Patter
 * [Creational Patterns](#creational)
 	* [Builder / Assembler](#builder--assembler)
 	* [Factory Method](#factory-method)
+	* [Prototype](#prototype)
 	* [Singleton](#singleton)
 	* [Abstract Factory](#abstract-factory)
 * [Structural Patterns](#structural)
@@ -711,6 +712,52 @@ assertThat(usaCurrency).isEqualTo("USD")
 Greece currency: EUR
 US currency: USD
 UK currency: No Currency Code Available
+```
+
+[Prototype](/patterns/src/test/kotlin/Prototype.kt)
+------------
+
+The prototype pattern is used to instantiate a new object by copying all of the properties of an existing object, 
+creating an independent clone. This practise is particularly useful when the construction of a new object is inefficient.
+
+#### Example:
+
+```kotlin
+open class Cat : Cloneable {
+    private var sound = ""
+    private var species = ""
+
+    init {
+        sound = "Meow"
+        species = "Ordinary"
+    }
+
+    public override fun clone(): Cat = Cat()
+
+    fun powerUp() {
+        sound = "MEOW!!!"
+        species = "Super cat"
+    }
+}
+
+fun makeSuperCat(cat: Cat): Cat = cat.apply { powerUp() }
+```
+
+#### Usage
+
+```kotlin
+val ordinaryCat = Cat()
+val copiedCat = ordinaryCat.clone()
+val superCat = makeSuperCat(copiedCat)
+println("Copied cat: $copiedCat")
+println("Super cat: $superCat")
+```
+
+#### Output
+
+```
+Copied cat: Cat@6e1567f1
+Super cat: Cat@6e1567f1
 ```
 
 [Singleton](/patterns/src/test/kotlin/Singleton.kt)
